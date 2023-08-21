@@ -64,12 +64,9 @@ public class HomeScreen : IScreen
 
     private void DisplayHomeScreen()
     {
-        do
-        {
-            Clear();
-            DrawMap();
-            DisplayCommands(_marginStart, _marginTop);
-        } while (ManageInput());
+        Clear();
+        DrawMap();
+        DisplayCommands(_marginStart, _marginTop);
     }
 
     private void DrawMap()
@@ -158,18 +155,72 @@ public class HomeScreen : IScreen
         SetCursorPosition(marginStart + 1, CursorTop);
     }
 
-    private bool ManageInput()
+    private enum CommandTypes
     {
-        var key = ReadKey();
-        var isExit = key.Key is ConsoleKey.X or ConsoleKey.Escape or ConsoleKey.Oem1 or ConsoleKey.Oem2;
-        if (isExit)
+        Exit,
+        Inventory,
+        Status,
+        MoveUp,
+        MoveDown,
+        MoveLeft,
+        MoveRight,
+        Wrong
+    }
+
+    // return true when continue on current display, false when exit from current display
+    public bool ManageInput()
+    {
+        var key = ReadKey(true);
+        var command = key.Key switch
         {
-            _popBackstack();
+            ConsoleKey.UpArrow => CommandTypes.MoveUp,
+            ConsoleKey.DownArrow => CommandTypes.MoveDown,
+            ConsoleKey.LeftArrow => CommandTypes.MoveLeft,
+            ConsoleKey.RightArrow => CommandTypes.MoveRight,
+            ConsoleKey.D1 => CommandTypes.Status,
+            ConsoleKey.D2 => CommandTypes.Inventory,
+            ConsoleKey.X => CommandTypes.Exit,
+            _ => CommandTypes.Wrong
+        };
+        
+        switch (command)
+        {
+            case CommandTypes.Exit:
+                _popBackstack();
+                break;
+            case CommandTypes.Inventory:
+                _navToInventory();
+                break;
+            case CommandTypes.Status:
+                _navToStatusScreen();
+                break;
+            case CommandTypes.MoveUp:
+                WriteLine("이동");
+                break;
+            case CommandTypes.MoveDown:
+                WriteLine("이동");
+                break;
+            case CommandTypes.MoveLeft:
+                WriteLine("이동");
+                break;
+            case CommandTypes.MoveRight:
+                WriteLine("이동");
+                break;
+            case CommandTypes.Wrong:
+                ForegroundColor = ConsoleColor.Red;
+                Write("삐빅! 잘못된 입력입니다.");
+                ResetColor();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
+        Thread.Sleep(500);
+        var isExit = command is CommandTypes.Exit or CommandTypes.Inventory or CommandTypes.Status;
+        
         return !isExit;
     }
 
-    public void DisplayScreen()
+    public void DrawScreen()
     {
         DisplayHomeScreen();
     }

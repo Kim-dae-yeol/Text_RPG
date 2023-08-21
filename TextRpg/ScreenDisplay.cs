@@ -23,9 +23,7 @@ public class ScreenDisplay
 
     public void DisplayCurrentScreen()
     {
-        var isEnd = !_backStack.TryPeek(out var current);
-
-
+        _backStack.TryPeek(out var current);
         IScreen screen = current switch
         {
             ScreenType.Home => new HomeScreen(
@@ -43,7 +41,7 @@ public class ScreenDisplay
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        screen.DisplayScreen();
+        screen.StartDisplay();
     }
 
     private void DisplayOnExit()
