@@ -1,20 +1,25 @@
 using System.Runtime.InteropServices.ComTypes;
+using TextRpg.model;
 using TextRpg.screens;
 using TextRpg.screens.home;
 using TextRpg.screens.inventory;
+using TextRpg.screens.status;
 
 namespace TextRpg;
 
 public class ScreenDisplay
 {
+    private const string ArgItemType = "args_item_type";
     private Stack<ScreenType> _backStack = new(10);
+    private Dictionary<string, object> _navArgs = new();
     internal IReadOnlyCollection<ScreenType> backStack => _backStack;
 
     internal enum ScreenType
     {
         Home,
         Status,
-        Inventory
+        Inventory,
+        InventoryToEquip,
     }
 
     public ScreenDisplay()
@@ -37,11 +42,29 @@ public class ScreenDisplay
                     DisplayOnExit();
                     _backStack.Pop();
                 }),
-            ScreenType.Status => throw new NotImplementedException(),
+            
+            ScreenType.Status => new StatusScreen(
+                marginStart: 0,
+                marginTop: 0,
+                onBackPressed: () => { _backStack.Pop(); },
+                navToInventory: (type) =>
+                {
+                    _navArgs[ArgItemType] = type;
+                    _backStack.Push(ScreenType.Inventory);
+                }),
+
             ScreenType.Inventory => new InventoryScreen(
                 marginStart: 0,
                 marginTop: 0,
                 onBackPressed: () => { _backStack.Pop(); }),
+
+            ScreenType.InventoryToEquip => InventoryScreen.GetInstance(
+                marginStart: 0,
+                marginTop: 0,
+                onBackPressed: () => { _backStack.Pop(); },
+                equipType: (IItem.ItemType)_navArgs
+                    .GetValueOrDefault(ArgItemType, IItem.ItemType.Nothing)
+            ),
             _ => throw new ArgumentOutOfRangeException()
         };
 
