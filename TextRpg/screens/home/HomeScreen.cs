@@ -3,17 +3,33 @@ namespace TextRpg.screens.home;
 using static TextRpg.Game;
 using static System.Console;
 
-public class HomeScreen
+public class HomeScreen : IScreen
 {
-    private int _width { get; init; }
-    private int _height { get; init; }
+    private int _width { get; }
+    private int _height { get; }
+    private int _marginStart { get; }
+    private int _marginTop { get; }
     private int[,] _map;
+    private Action _navToStatusScreen;
+    private Action _navToInventory;
+    private Action _popBackstack;
 
-    public HomeScreen(int width = 60, int height = 10)
+    public HomeScreen(Action navToStatusScreen,
+        Action navToInventory,
+        Action popBackstack,
+        int marginStart = 0,
+        int marginTop = 0,
+        int width = 60,
+        int height = 10)
     {
         _width = width;
         _height = height;
+        _marginStart = marginStart;
+        _marginTop = marginTop;
         _map = new int[height, width];
+        _navToStatusScreen = navToStatusScreen;
+        _navToInventory = navToInventory;
+        _popBackstack = popBackstack;
         InitMap();
     }
 
@@ -46,16 +62,23 @@ public class HomeScreen
         _map[3, 8] = (int)MapType.Npc;
     }
 
-    public void DisplayHomeScreen(Action navToStatusScreen,
-        Action navToInventory,
-        Action popBackstack,
-        int marginStart = 0,
-        int marginTop = 0)
+    private void DisplayHomeScreen()
     {
-        Clear();
-        //1. draw town
+        do
+        {
+            Clear();
+            DrawMap();
+            DisplayCommands(_marginStart, _marginTop);
+        } while (ManageInput());
+    }
+
+    private void DrawMap()
+    {
+        // todo [Update]   2. SetCursorPosition to margin...
+        SetCursorPosition(_marginStart, _marginTop);
         for (var i = 0; i < _height; i++)
         {
+            SetCursorPosition(_marginStart, CursorTop);
             for (var j = 0; j < _width; j++)
             {
                 switch ((MapType)_map[i, j])
@@ -91,14 +114,6 @@ public class HomeScreen
 
             WriteLine();
         }
-
-
-        DisplayCommands(marginStart, marginTop);
-        var key = ReadKey();
-        if (key.Key == ConsoleKey.X)
-        {
-            popBackstack();
-        }
     }
 
     private void DisplayCommands(int marginStart = 0, int marginTop = 0)
@@ -106,7 +121,7 @@ public class HomeScreen
         var commandTop = marginTop + _height;
         SetCursorPosition(marginStart, commandTop);
         // todo commandHeight to make static or constants
-        var commandHeight = 6;
+        var commandHeight = 7;
         for (var i = 0; i < commandHeight; i++)
         {
             WriteLine("|");
@@ -137,11 +152,25 @@ public class HomeScreen
         SetCursorPosition(marginStart + 1, CursorTop);
         WriteLine("마을에서는 던전으로 가기전의 활동을 할 수 있습니다.");
         SetCursorPosition(marginStart + 1, CursorTop);
-        WriteLine($"{"1.상태보기",-24} {"2.인벤토리",24}");
+        WriteLine($"{"1. 상태보기",-24} {"2. 인벤토리",24}");
+        SetCursorPosition(marginStart + 1, CursorTop);
+        WriteLine($"{"X. 종료하기",53}");
         SetCursorPosition(marginStart + 1, CursorTop);
     }
 
-    private void ManageInput()
+    private bool ManageInput()
     {
+        var key = ReadKey();
+        var isExit = key.Key is ConsoleKey.X or ConsoleKey.Escape or ConsoleKey.Oem1 or ConsoleKey.Oem2;
+        if (isExit)
+        {
+            _popBackstack();
+        }
+        return !isExit;
+    }
+
+    public void DisplayScreen()
+    {
+        DisplayHomeScreen();
     }
 }
