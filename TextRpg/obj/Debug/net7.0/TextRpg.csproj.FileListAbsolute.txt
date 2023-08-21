@@ -1,0 +1,15 @@
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/bin/Debug/net7.0/TextRpg
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/bin/Debug/net7.0/TextRpg.deps.json
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/bin/Debug/net7.0/TextRpg.runtimeconfig.json
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/bin/Debug/net7.0/TextRpg.dll
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/bin/Debug/net7.0/TextRpg.pdb
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.csproj.AssemblyReference.cache
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.GeneratedMSBuildEditorConfig.editorconfig
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.AssemblyInfoInputs.cache
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.AssemblyInfo.cs
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.csproj.CoreCompileInputs.cache
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.dll
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/refint/TextRpg.dll
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.pdb
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/TextRpg.genruntimeconfig.cache
+/Users/gimdaeyeol/RiderProjects/Text_RPG/TextRpg/obj/Debug/net7.0/ref/TextRpg.dll
