@@ -8,7 +8,7 @@ public static class Extensions
     {
         return type switch
         {
-            IItem.ItemType.Weapon => "무기에영",
+            IItem.ItemType.Weapon => "무기입니당",
             IItem.ItemType.Helm => "모자",
             IItem.ItemType.SubWeapon => "보조무기",
             IItem.ItemType.Armor => "갑옷",
