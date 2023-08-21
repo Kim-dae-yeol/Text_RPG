@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices.ComTypes;
 using TextRpg.screens;
 using TextRpg.screens.home;
+using TextRpg.screens.inventory;
 
 namespace TextRpg;
 
@@ -37,7 +38,10 @@ public class ScreenDisplay
                     _backStack.Pop();
                 }),
             ScreenType.Status => throw new NotImplementedException(),
-            ScreenType.Inventory => throw new NotImplementedException(),
+            ScreenType.Inventory => new InventoryScreen(
+                marginStart: 0,
+                marginTop: 0,
+                onBackPressed: () => { _backStack.Pop(); }),
             _ => throw new ArgumentOutOfRangeException()
         };
 
