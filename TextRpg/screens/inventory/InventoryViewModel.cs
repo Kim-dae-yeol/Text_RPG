@@ -16,6 +16,8 @@ public class InventoryViewModel
     public InventoryState State { get; private set; }
     public string? Error { get; private set; } = null;
 
+    public IItem.ItemType EquipType = IItem.ItemType.Nothing;
+
     public InventoryViewModel()
     {
         var items = _repo.GetInventoryItems(HeightIndex + 1, WidthIndex + 1);

@@ -30,4 +30,17 @@ public static class Extensions
             _ => throw new ArgumentOutOfRangeException(nameof(grade), grade, null)
         };
     }
+
+    internal static string String(this IItem.ItemGrade grade)
+    {
+        return grade switch
+        {
+            IItem.ItemGrade.Normal =>"노멀",
+            IItem.ItemGrade.Rare => "레어",
+            IItem.ItemGrade.Epic => "에픽",
+            IItem.ItemGrade.Legendary => "전설",
+            IItem.ItemGrade.Mythic => "신화",
+            _ => throw new ArgumentOutOfRangeException(nameof(grade), grade, null)
+        };
+    }
 }
