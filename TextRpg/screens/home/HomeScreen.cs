@@ -167,7 +167,7 @@ public class HomeScreen : IScreen
         Wrong
     }
 
-    // return true when continue on current display, false when exit from current display
+    
     public bool ManageInput()
     {
         var key = ReadKey(true);

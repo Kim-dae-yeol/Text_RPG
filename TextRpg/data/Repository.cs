@@ -1,4 +1,5 @@
 using TextRpg.model;
+using TextRpg.model.items;
 using TextRpg.screens.inventory;
 
 namespace TextRpg.data;
@@ -16,15 +17,15 @@ public class Repository
     {
     }
 
-    public List<IItem> GetItems()
+    public List<IItem> GetInventoryItems(int itemRows, int itemCols)
     {
         // todo database 또는 파일시스템 연결 이후 데이터소스에서 가져오도록 수정.
-        var items = new List<IItem>(30);
-        for (int row = 0; row < InventoryViewModel.Height; row++)
+        var items = new List<IItem>(itemRows * itemCols);
+        for (int row = 0; row < itemRows; row++)
         {
-            for (int col = 0; col < InventoryViewModel.Width; col++)
+            for (int col = 0; col < itemCols; col++)
             {
-                items.Add(new IItem.Empty());
+                items.Add(new Guinsoo());
             }
         }
 

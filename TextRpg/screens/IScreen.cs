@@ -10,6 +10,7 @@ public interface IScreen
         } while (ManageInput());
     }
 
+    /** return true when continue on current display, false when exit from current display*/
     private protected bool ManageInput();
 
     private protected void DrawScreen();
