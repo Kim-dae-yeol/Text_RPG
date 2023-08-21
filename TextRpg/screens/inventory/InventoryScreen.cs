@@ -1,5 +1,4 @@
 using TextRpg.model;
-using TextRpg.model.items;
 using static System.Console;
 
 namespace TextRpg.screens.inventory;
@@ -219,7 +218,7 @@ public class InventoryScreen : IScreen
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: itemSlotTop + 1 + row * HeightPerSlot);
-                WriteLine($"{currentItem.Name,-9}");
+                WriteLine($"•{currentItem.Name,-9}");
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: CursorTop);
@@ -227,9 +226,20 @@ public class InventoryScreen : IScreen
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: CursorTop);
-                WriteLine($"•{currentItem.Grade,-9}");
+                WriteLine($"•{currentItem.Grade.String(),-9}");
                 ResetColor();
             }
         }
+    }
+
+    public static InventoryScreen GetInstance(
+        int marginStart,
+        int marginTop,
+        Action onBackPressed,
+        IItem.ItemType equipType)
+    {
+        var screen = new InventoryScreen(marginStart, marginTop, onBackPressed);
+        screen._vm.EquipType = equipType;
+        return screen;
     }
 }
