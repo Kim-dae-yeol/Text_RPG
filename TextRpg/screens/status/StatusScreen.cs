@@ -27,6 +27,8 @@ public class StatusScreen : IScreen
     private EquipmentSlotType _selectedSlot = EquipmentSlotType.Helm;
     private int _marginStart { get; }
     private int _marginTop { get; }
+    private Action _onBackPressed;
+    private Action<IItem.ItemType> _navToInventory;
 
     public StatusScreen(
         Action onBackPressed,
@@ -36,6 +38,8 @@ public class StatusScreen : IScreen
     {
         _marginStart = marginStart;
         _marginTop = marginTop;
+        _onBackPressed = onBackPressed;
+        _navToInventory = navToInventory;
     }
 
     public bool ManageInput()
@@ -131,8 +135,9 @@ public class StatusScreen : IScreen
             WriteLine();
             SetCursorPosition(startPos, CursorTop);
         }
+
         ResetColor();
-        
+
         SetCursorPosition(startPos + 1, topPos + 1);
         if (helm == IItem.Empty)
         {
