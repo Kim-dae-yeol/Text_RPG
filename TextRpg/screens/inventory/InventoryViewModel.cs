@@ -14,6 +14,7 @@ public class InventoryViewModel
 
     private Repository _repo = Repository.GetInstance();
     public InventoryState State { get; private set; }
+    public string? Error { get; private set; } = null;
 
     public InventoryViewModel()
     {
@@ -26,7 +27,7 @@ public class InventoryViewModel
         switch (command)
         {
             case InventoryScreen.Command.Equip:
-                // todo : 인벤토리 장차크
+                // todo : 인벤토리 장착 하려면 상태창 만들고 하기 !!
                 break;
             case InventoryScreen.Command.Exit:
                 // do nothing
@@ -62,9 +63,35 @@ public class InventoryViewModel
             case InventoryScreen.Command.Wrong:
                 // do nothing
                 break;
+            case InventoryScreen.Command.Sort:
+                SortItems();
+                break;
+            case InventoryScreen.Command.Throw:
+                if (State.IsCurrentSelectedItemExist)
+                {
+                    var deletedAtSelection = State.Items;
+                    deletedAtSelection[State.CurrentY * (WidthIndex + 1) + State.CurrentX] = IItem.Empty;
+
+                    State = State with
+                    {
+                        Items = deletedAtSelection
+                    };
+                }
+
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(command), command, null);
         }
+    }
+
+    private void SortItems()
+    {
+        State = State with { Items = State.Items.OrderByDescending(item => item.Name).ToList() };
+    }
+
+    public void ConsumeError()
+    {
+        Error = null;
     }
 }
 
@@ -76,4 +103,6 @@ public record InventoryState(
 {
     public IItem? CurrentSelectedItem =>
         Items.ElementAtOrDefault(CurrentY * (InventoryViewModel.WidthIndex + 1) + CurrentX);
+
+    public bool IsCurrentSelectedItemExist => CurrentSelectedItem != null && CurrentSelectedItem != IItem.Empty;
 }

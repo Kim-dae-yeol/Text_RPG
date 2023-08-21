@@ -25,7 +25,14 @@ public class Repository
         {
             for (int col = 0; col < itemCols; col++)
             {
-                items.Add(new Guinsoo());
+                if (row == 3 && col == 0)
+                {
+                    items.Add(new Guinsoo());
+                }
+                else
+                {
+                    items.Add(IItem.Empty);
+                }
             }
         }
 

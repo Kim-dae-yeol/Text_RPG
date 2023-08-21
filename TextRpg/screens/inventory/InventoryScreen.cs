@@ -14,6 +14,8 @@ public class InventoryScreen : IScreen
         MoveDown,
         MoveLeft,
         MoveRight,
+        Sort,
+        Throw,
         Wrong
     }
 
@@ -51,14 +53,18 @@ public class InventoryScreen : IScreen
         {
             ConsoleKey.E => Command.Equip,
             ConsoleKey.X => Command.Exit,
+            ConsoleKey.S => Command.Sort,
             ConsoleKey.UpArrow => Command.MoveUp,
             ConsoleKey.DownArrow => Command.MoveDown,
             ConsoleKey.LeftArrow => Command.MoveLeft,
             ConsoleKey.RightArrow => Command.MoveRight,
+            ConsoleKey.T => Command.Throw,
             _ => Command.Wrong
         };
+
         if (command == Command.Wrong)
         {
+            Beep();
             var message = "잘못된 입력입니다!";
             SetCursorPosition((ScreenWidth - message.Length) / 2, ScreenHeight + 1);
             ForegroundColor = ConsoleColor.Red;
@@ -116,14 +122,10 @@ public class InventoryScreen : IScreen
         ResetColor();
 
         SetCursorPosition(_marginStart + 1, _marginTop + 1);
-        if (_vm.State.CurrentY == -1)
-        {
-            ForegroundColor = ConsoleColor.Cyan;
-        }
-
-        Write(" [ X ] ");
-        WriteLine($"{"E: 장비하기 ",87}");
-        ResetColor();
+        Write($"{"X: 뒤로가기",-31}");
+        Write($"{"E: 장비하기 ",-31}");
+        Write($"{"S: 정렬하기 ",-31}");
+        Write($"{"T: 버리기 ",-31}");
 
         DisplayItemDescription();
         SetCursorPosition(_marginStart + DescMarginLeft + 1, CursorTop);
@@ -132,6 +134,11 @@ public class InventoryScreen : IScreen
         const int itemSlotTop = CommandHeight + 1;
         DisplayItemSlots(itemSlotStart + 1, itemSlotTop);
         DisplayItems(_vm.State.Items, itemSlotStart + 1, itemSlotTop);
+
+        if (_vm.Error != null)
+        {
+            _vm.ConsumeError();
+        }
     }
 
     private void DisplayItemDescription()
@@ -208,7 +215,7 @@ public class InventoryScreen : IScreen
             {
                 var currentItem = items[row * ItemSlotCols + col];
                 if (currentItem == IItem.Empty) continue;
-
+                ForegroundColor = currentItem.Grade.GetColor();
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: itemSlotTop + 1 + row * HeightPerSlot);
@@ -216,11 +223,12 @@ public class InventoryScreen : IScreen
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: CursorTop);
-                WriteLine($"•{currentItem.Type,-9}");
+                WriteLine($"•{currentItem.Type.String(),-9}");
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: CursorTop);
                 WriteLine($"•{currentItem.Grade,-9}");
+                ResetColor();
             }
         }
     }
