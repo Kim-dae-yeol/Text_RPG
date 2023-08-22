@@ -11,7 +11,9 @@ public class StatusViewModel
 
     // todo player 정보를 repository 에서 가져온다.
     // todo : 상태 정의 및 로직 처리
-    public StatusState State { get; private set; }
+    private StatusState State { get; set; }
+    public StatusScreen.EquipmentSlotType CurrentSelected => State.currentSelected;
+    public Equipment Equipment => State.player.Equipment;
 
     public StatusViewModel()
     {

@@ -39,7 +39,8 @@ public class StatusScreen : IScreen
     private const int HeightPerSlot = 4;
 
     private StatusViewModel _vm = new();
-    private EquipmentSlotType _selectedSlot => _vm.State.currentSelected;
+    private EquipmentSlotType _selectedSlot => _vm.CurrentSelected;
+    private Equipment _equipment => _vm.Equipment;
     private int _marginStart { get; }
     private int _marginTop { get; }
     private Action _onBackPressed;
@@ -207,51 +208,52 @@ public class StatusScreen : IScreen
     private void DrawSlots()
     {
         // todo : indexX, indexY 를 지정해서 그걸 이용해서 WidthPerSlot 을 곱해서 해당 함수 호출
-        // todo : _vm 의 상태값으로 해당 값을 전달하도록. 
         DrawSlot(
             startPos: _marginStart + WidthPerSlot + 1,
             topPos: _marginTop + CommandHeight + 1,
             slotType: EquipmentSlotType.Helm,
-            item: IItem.Empty
+            item: _equipment.Helm
         );
 
         DrawSlot(
             startPos: _marginStart + WidthPerSlot * 2 + 3,
             topPos: _marginTop + HeightPerSlot + CommandHeight + 2,
             slotType: EquipmentSlotType.Necklace,
-            item: IItem.Empty
+            item: _equipment.Necklace
         );
 
         DrawSlot(
             startPos: _marginStart + 1,
             topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.Weapon,
-            item: new Guinsoo()
+            item: _equipment.Weapon
         );
         DrawSlot(
             startPos: _marginStart + WidthPerSlot + 2,
             topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.Armor,
-            item: IItem.Empty
+            item: _equipment.Armor
         );
         DrawSlot(
             startPos: _marginStart + WidthPerSlot * 2 + 3,
             topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.SubWeapon,
-            item: IItem.Empty
+            item: _equipment.SubWeapon
         );
         DrawSlot(
             startPos: _marginStart + 1,
             topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 4,
             slotType: EquipmentSlotType.Ring1,
-            item: IItem.Empty
+            item: _equipment.Ring1
         );
         DrawSlot(
             startPos: _marginStart + WidthPerSlot * 2 + 3,
             topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 4,
             slotType: EquipmentSlotType.Ring2,
-            item: IItem.Empty
+            item: _equipment.Ring2
         );
+        
+        
         // todo : Skills Slot -> 중요도 [하]
     }
 
