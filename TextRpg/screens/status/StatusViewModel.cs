@@ -54,6 +54,9 @@ public class StatusViewModel
                 }
 
                 break;
+            case StatusScreen.Command.Exit:
+                _repo.SaveData();
+                break;
             default:
                 //do nothing
                 break;
