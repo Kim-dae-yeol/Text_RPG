@@ -18,7 +18,7 @@ public class Repository
     {
     }
 
-    public List<IItem> GetInventoryItems(int itemRows, int itemCols)
+    public IReadOnlyList<IItem> GetInventoryItems()
     {
         return player.Inventory;
     }

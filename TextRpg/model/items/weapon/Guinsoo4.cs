@@ -1,8 +1,9 @@
 namespace TextRpg.model.items;
 
-public class Guinsoo : IItem
+public class Guinsoo3: IItem
 {
-    public int ID { get; } = (int)IItem.ItemIds.Guinsoo;
+    public string GUID { get; init; } = Guid.NewGuid().ToString();
+    public int ID => (int)IItem.ItemIds.Guinsoo;
     public string Name { get; } = "구인수의 격노검";
     public string Description { get; } = "공격력, 치명타확률, 공격속도가 비약적으로 증가합니다.";
 
