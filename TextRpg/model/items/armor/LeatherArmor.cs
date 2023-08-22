@@ -2,7 +2,7 @@ namespace TextRpg.model.items.armor;
 
 public class LeatherArmor : IItem
 {
-    public string GUID { get; init; } = Guid.NewGuid().ToString();
+    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
     public int ID => (int)IItem.ItemIds.Guinsoo;
     public string Name => "천갑옷";
     public string Description => "방어력이 소폭 증가합니다.";

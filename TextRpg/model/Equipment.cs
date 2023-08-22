@@ -94,6 +94,7 @@ public class Equipment
         }
     }
 
+    /**helm - armor - necklace - weapon - subWeapon - ring1 - ring2**/
     public List<IItem> EquipItems()
     {
         var list = new List<IItem>();

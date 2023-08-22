@@ -2,7 +2,7 @@ namespace TextRpg.model.items.weapon;
 
 public class LongSword : IItem
 {
-    public string GUID { get; init; } = Guid.NewGuid().ToString();
+    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
     public int ID => (int)IItem.ItemIds.LongSword;
     public string Name { get; } = "롱소드";
     public string Description { get; } = "공격력이 상승합니다.";

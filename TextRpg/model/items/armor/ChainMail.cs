@@ -2,7 +2,7 @@ namespace TextRpg.model.items.armor;
 
 public class ChainMail : IItem
 {
-    public string GUID { get; init; } = Guid.NewGuid().ToString();
+    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
     public int ID => (int)IItem.ItemIds.Guinsoo;
     public string Name { get; } = "쇠사슬 갑옷";
     public string Description { get; } = "방어력이 증가합니다.";

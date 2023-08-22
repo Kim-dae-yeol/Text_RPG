@@ -2,7 +2,7 @@ namespace TextRpg.model.items;
 
 public class Guinsoo4: IItem
 {
-    public string GUID { get; init; } = Guid.NewGuid().ToString();
+    public string Guid { get; set; } = System.Guid.NewGuid().ToString();
     public int ID => (int)IItem.ItemIds.Guinsoo;
     public string Name { get; } = "구인수의 격노검";
     public string Description { get; } = "공격력, 치명타확률, 공격속도가 비약적으로 증가합니다.";

@@ -86,7 +86,7 @@ public class HomeScreen : IScreen
                         break;
                     case MapType.Player:
                         ForegroundColor = ConsoleColor.Green;
-                        Write("O");
+                        Write("T");
                         ResetColor();
                         break;
                     case MapType.Npc:
