@@ -42,7 +42,7 @@ public class ScreenDisplay
                     DisplayOnExit();
                     _backStack.Pop();
                 }),
-            
+
             ScreenType.Status => new StatusScreen(
                 marginStart: 0,
                 marginTop: 0,
@@ -50,7 +50,7 @@ public class ScreenDisplay
                 navToInventory: (type) =>
                 {
                     _navArgs[ArgItemType] = type;
-                    _backStack.Push(ScreenType.Inventory);
+                    _backStack.Push(ScreenType.InventoryToEquip);
                 }),
 
             ScreenType.Inventory => new InventoryScreen(
@@ -58,13 +58,14 @@ public class ScreenDisplay
                 marginTop: 0,
                 onBackPressed: () => { _backStack.Pop(); }),
 
-            ScreenType.InventoryToEquip => InventoryScreen.GetInstance(
-                marginStart: 0,
-                marginTop: 0,
-                onBackPressed: () => { _backStack.Pop(); },
-                equipType: (IItem.ItemType)_navArgs
-                    .GetValueOrDefault(ArgItemType, IItem.ItemType.Nothing)
-            ),
+            ScreenType.InventoryToEquip =>
+                InventoryScreen.GetInstance(
+                    marginStart: 0,
+                    marginTop: 0,
+                    onBackPressed: () => { _backStack.Pop(); },
+                    equipType: Enum
+                        .GetValues<StatusScreen.EquipmentSlotType>()
+                        .First(slot => slot.ToString() == _navArgs[ArgItemType].ToString())),
             _ => throw new ArgumentOutOfRangeException()
         };
 

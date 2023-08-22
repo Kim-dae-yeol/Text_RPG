@@ -108,8 +108,35 @@ public class Character
         }
     }
 
-    public void EquipItemToSlot(IItem item, StatusScreen.EquipmentSlotType slot)
+    public void EquipItemToSlot(IItem item, StatusScreen.EquipmentSlotType? slot)
     {
+        if (slot == null) return;
+        switch (slot)
+        {
+            case StatusScreen.EquipmentSlotType.Helm:
+                Equipment.Helm = item;
+                break;
+            case StatusScreen.EquipmentSlotType.Necklace:
+                Equipment.Necklace = item;
+                break;
+            case StatusScreen.EquipmentSlotType.Weapon:
+                Equipment.Weapon = item;
+                break;
+            case StatusScreen.EquipmentSlotType.Armor:
+                Equipment.Armor = item;
+                break;
+            case StatusScreen.EquipmentSlotType.SubWeapon:
+                Equipment.SubWeapon = item;
+                break;
+            case StatusScreen.EquipmentSlotType.Ring1:
+                Equipment.Ring1 = item;
+                break;
+            case StatusScreen.EquipmentSlotType.Ring2:
+                Equipment.Ring2 = item;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(slot), slot, null);
+        }
     }
 
 
