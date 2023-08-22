@@ -6,6 +6,7 @@ namespace TextRpg.data;
 
 public class Repository
 {
+    public Character player { get; private set; } = new Character();
     private static Repository? _instance = null;
 
     public static Repository GetInstance()
@@ -15,6 +16,7 @@ public class Repository
 
     private Repository()
     {
+        //todo repository 에서 ... 
     }
 
     public List<IItem> GetInventoryItems(int itemRows, int itemCols)

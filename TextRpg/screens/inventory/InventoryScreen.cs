@@ -148,12 +148,12 @@ public class InventoryScreen : IScreen
         SetCursorPosition(_marginStart + DescMarginLeft + 1, CursorTop);
         WriteLine($" • {_vm.State.CurrentSelectedItem?.Description ?? ""}");
         SetCursorPosition(_marginStart + DescMarginLeft + 1, CursorTop);
-        WriteLine($" • {_vm.State.CurrentSelectedItem?.Effect1 ?? ""}");
+        WriteLine($" • {_vm.State.CurrentSelectedItem?.Effect1Desc ?? ""}");
         SetCursorPosition(_marginStart + DescMarginLeft + 1, CursorTop);
-        WriteLine($" • {_vm.State.CurrentSelectedItem?.Effect2 ?? ""}");
+        WriteLine($" • {_vm.State.CurrentSelectedItem?.Effect2Desc ?? ""}");
 
 
-        var effect3Descriptions = (_vm.State.CurrentSelectedItem?.Effect3 ?? "")
+        var effect3Descriptions = (_vm.State.CurrentSelectedItem?.Effect3Desc ?? "")
             .Split("\n")
             .Where(s => !string.IsNullOrWhiteSpace(s));
 

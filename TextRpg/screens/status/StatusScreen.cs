@@ -31,16 +31,15 @@ public class StatusScreen : IScreen
     }
 
 
-    private const int ScreenWidth = 144;
-    private const int ScreenHeight = 25;
+    private const int ScreenWidth = 124;
+    private const int ScreenHeight = 24;
     private const int CommandHeight = 2;
-    private const int SlotsWidth = 62;
+    private const int SlotsWidth = 64;
     private const int WidthPerSlot = 20;
     private const int HeightPerSlot = 4;
 
-    //todo 이 변수 viewModel 로 빼기 
-    private EquipmentSlotType _selectedSlot = EquipmentSlotType.Helm;
-
+    private StatusViewModel _vm = new();
+    private EquipmentSlotType _selectedSlot => _vm.State.currentSelected;
     private int _marginStart { get; }
     private int _marginTop { get; }
     private Action _onBackPressed;
@@ -61,6 +60,7 @@ public class StatusScreen : IScreen
     public bool ManageInput()
     {
         var key = ReadKey(true);
+        Beep();
         var command = key.Key switch
         {
             ConsoleKey.X => Command.Exit,
@@ -73,6 +73,7 @@ public class StatusScreen : IScreen
             _ => Command.Wrong
         };
 
+        _vm.OnCommand(command);
         switch (command)
         {
             case Command.Exit:
@@ -136,6 +137,9 @@ public class StatusScreen : IScreen
         DrawCommands();
 
         DrawSlots();
+        // todo : c to _vm.State.player
+        var c = new Character();
+        DrawCharacterInformation(c);
     }
 
     private void DrawCommands()
@@ -203,6 +207,7 @@ public class StatusScreen : IScreen
     private void DrawSlots()
     {
         // todo : indexX, indexY 를 지정해서 그걸 이용해서 WidthPerSlot 을 곱해서 해당 함수 호출
+        // todo : _vm 의 상태값으로 해당 값을 전달하도록. 
         DrawSlot(
             startPos: _marginStart + WidthPerSlot + 1,
             topPos: _marginTop + CommandHeight + 1,
@@ -211,39 +216,39 @@ public class StatusScreen : IScreen
         );
 
         DrawSlot(
-            startPos: _marginStart + WidthPerSlot * 2 + 1,
-            topPos: _marginTop + HeightPerSlot + CommandHeight + 1,
+            startPos: _marginStart + WidthPerSlot * 2 + 3,
+            topPos: _marginTop + HeightPerSlot + CommandHeight + 2,
             slotType: EquipmentSlotType.Necklace,
             item: IItem.Empty
         );
 
         DrawSlot(
             startPos: _marginStart + 1,
-            topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 1,
+            topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.Weapon,
             item: new Guinsoo()
         );
         DrawSlot(
-            startPos: _marginStart + WidthPerSlot + 1,
-            topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 1,
+            startPos: _marginStart + WidthPerSlot + 2,
+            topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.Armor,
             item: IItem.Empty
         );
         DrawSlot(
-            startPos: _marginStart + WidthPerSlot * 2 + 1,
-            topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 1,
+            startPos: _marginStart + WidthPerSlot * 2 + 3,
+            topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.SubWeapon,
             item: IItem.Empty
         );
         DrawSlot(
             startPos: _marginStart + 1,
-            topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 1,
+            topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 4,
             slotType: EquipmentSlotType.Ring1,
             item: IItem.Empty
         );
         DrawSlot(
-            startPos: _marginStart + WidthPerSlot * 2 + 1,
-            topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 1,
+            startPos: _marginStart + WidthPerSlot * 2 + 3,
+            topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 4,
             slotType: EquipmentSlotType.Ring2,
             item: IItem.Empty
         );
@@ -304,5 +309,40 @@ public class StatusScreen : IScreen
         WriteLine(msg);
         ResetColor();
         Thread.Sleep(1500);
+    }
+
+    private void DrawCharacterInformation(Character c)
+    {
+        var left = _marginStart + SlotsWidth + 10 + 1;
+        var top = CommandHeight + 1 + 5;
+        SetCursorPosition(left, top);
+
+        Write($"{" • Name",-20}");
+        WriteLine($"| {c.Name}");
+        SetCursorPosition(left, CursorTop);
+
+        Write($"{" • Lv",-20}");
+        WriteLine($"| {c.Level}");
+        SetCursorPosition(left, CursorTop);
+
+        Write($"{" • Exp",-20}");
+        WriteLine($"| {c.Exp} / {c.LevelUpExp}");
+        SetCursorPosition(left, CursorTop);
+
+        Write($"{" • Hp",-20}");
+        WriteLine($"| {c.Hp}");
+        SetCursorPosition(left, CursorTop);
+
+        Write($"{" • Atk",-20}");
+        WriteLine($"| {c.Atk}");
+        SetCursorPosition(left, CursorTop);
+
+        Write($"{" • Speed",-20}");
+        WriteLine($"| {c.Speed:N2}");
+        SetCursorPosition(left, CursorTop);
+
+        Write($"{" • Critical",-20}");
+        WriteLine($"| {c.Critical}");
+        SetCursorPosition(left, CursorTop);
     }
 }
