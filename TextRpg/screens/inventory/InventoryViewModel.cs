@@ -56,7 +56,7 @@ public class InventoryViewModel
 
                 break;
             case InventoryScreen.Command.Exit:
-                // do nothing
+                _repo.SaveData();
                 break;
             case InventoryScreen.Command.MoveUp:
                 if (State.CurrentY > 0)
@@ -101,7 +101,7 @@ public class InventoryViewModel
                         Items = _repo.GetInventoryItems()
                     };
                 }
-
+                _repo.SaveData();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(command), command, null);
