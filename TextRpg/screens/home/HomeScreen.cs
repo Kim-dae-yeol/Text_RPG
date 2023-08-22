@@ -5,18 +5,33 @@ using static System.Console;
 
 public class HomeScreen : IScreen
 {
+    private HomeViewModel _vm;
     private int _width { get; }
     private int _height { get; }
     private int _marginStart { get; }
     private int _marginTop { get; }
+
     private int[,] _map;
+
+    private const int DialogWidth = 25;
+    private const int DialogHeight = 3;
+
+    private const int InteractionMessageWidth = 80;
+    private const int InteractionMessageHeight = 3;
+    private const int CommandHeight = 7;
+    private const int CommandWidth = 80;
+
     private Action _navToStatusScreen;
     private Action _navToInventory;
     private Action _popBackstack;
+    private Action _navToEnhancement;
+    private Action _navToShop;
 
     public HomeScreen(Action navToStatusScreen,
         Action navToInventory,
         Action popBackstack,
+        Action navToShop,
+        Action navToEnhancement,
         int marginStart = 0,
         int marginTop = 0,
         int width = 60,
@@ -26,41 +41,15 @@ public class HomeScreen : IScreen
         _height = height;
         _marginStart = marginStart;
         _marginTop = marginTop;
-        _map = new int[height, width];
+        _vm = new HomeViewModel();
+        _map = _vm.State.map;
         _navToStatusScreen = navToStatusScreen;
         _navToInventory = navToInventory;
         _popBackstack = popBackstack;
-        InitMap();
+        _navToShop = navToShop;
+        _navToEnhancement = navToEnhancement;
     }
 
-    private void InitMap()
-    {
-        for (var i = 0; i < _height; i++)
-        {
-            for (var j = 0; j < _width; j++)
-            {
-                if (i == 0 || i == _height - 1)
-                {
-                    _map[i, j] = (int)MapType.WallHorizontal;
-                }
-                else if (j == 0 || j == _width - 1)
-                {
-                    _map[i, j] = (int)MapType.WallVertical;
-                }
-                else
-                {
-                    _map[i, j] = (int)MapType.Space;
-                }
-            }
-        }
-
-        // 맵의 뼈대를 그린다.
-        // 맵에서 npc 들을 저장한다.
-        // todo 맵에 있는 npc 와 상호작용을 어떻게 할것인가??
-        // npc in hometown {강화, 판매}
-        _map[3, 1] = (int)MapType.Npc;
-        _map[3, 8] = (int)MapType.Npc;
-    }
 
     private void DisplayHomeScreen()
     {
@@ -71,12 +60,13 @@ public class HomeScreen : IScreen
 
     private void DrawMap()
     {
-        // todo [Update]   2. SetCursorPosition to margin...
-        SetCursorPosition(_marginStart, _marginTop);
-        for (var i = 0; i < _height; i++)
+        
+        var left = _marginStart + CommandWidth / 2 - HomeViewModel.MapWidth / 2;
+        SetCursorPosition(left, _marginTop);
+        for (var i = 0; i < HomeViewModel.MapHeight; i++)
         {
-            SetCursorPosition(_marginStart, CursorTop);
-            for (var j = 0; j < _width; j++)
+            SetCursorPosition(left, CursorTop);
+            for (var j = 0; j < HomeViewModel.MapWidth; j++)
             {
                 switch ((MapType)_map[i, j])
                 {
@@ -91,7 +81,7 @@ public class HomeScreen : IScreen
                         break;
                     case MapType.Monster:
                         ForegroundColor = ConsoleColor.Red;
-                        Write("@");
+                        Write("u");
                         ResetColor();
                         break;
                     case MapType.Player:
@@ -117,29 +107,28 @@ public class HomeScreen : IScreen
     {
         var commandTop = marginTop + _height;
         SetCursorPosition(marginStart, commandTop);
-        // todo commandHeight to make static or constants
-        var commandHeight = 7;
-        for (var i = 0; i < commandHeight; i++)
+
+        for (var i = 0; i < CommandHeight; i++)
         {
             WriteLine("|");
             SetCursorPosition(marginStart, CursorTop);
         }
 
         SetCursorPosition(marginStart + _width - 1, commandTop);
-        for (var i = 0; i < commandHeight; i++)
+        for (var i = 0; i < CommandHeight; i++)
         {
             WriteLine("|");
-            SetCursorPosition(marginStart + _width - 1, CursorTop);
+            SetCursorPosition(marginStart + CommandWidth - 1, CursorTop);
         }
 
         SetCursorPosition(marginStart, commandTop);
-        for (var i = 0; i < _width; i++)
+        for (var i = 0; i < CommandWidth; i++)
         {
             Write("-");
         }
 
-        SetCursorPosition(marginStart, commandTop + commandHeight - 1);
-        for (var i = 0; i < _width; i++)
+        SetCursorPosition(marginStart, commandTop + CommandHeight - 1);
+        for (var i = 0; i < CommandWidth; i++)
         {
             Write("-");
         }
@@ -149,13 +138,13 @@ public class HomeScreen : IScreen
         SetCursorPosition(marginStart + 1, CursorTop);
         WriteLine("마을에서는 던전으로 가기전의 활동을 할 수 있습니다.");
         SetCursorPosition(marginStart + 1, CursorTop);
-        WriteLine($"{"1. 상태보기",-24} {"2. 인벤토리",24}");
+        WriteLine($"{"1. 상태보기",-24} {"2. 인벤토리",45}");
         SetCursorPosition(marginStart + 1, CursorTop);
-        WriteLine($"{"X. 종료하기",53}");
+        WriteLine($"{"X. 종료하기",74}");
         SetCursorPosition(marginStart + 1, CursorTop);
     }
 
-    private enum CommandTypes
+    public enum CommandTypes
     {
         Exit,
         Inventory,
@@ -164,10 +153,11 @@ public class HomeScreen : IScreen
         MoveDown,
         MoveLeft,
         MoveRight,
+        Interaction,
         Wrong
     }
 
-    
+
     public bool ManageInput()
     {
         var key = ReadKey(true);
@@ -180,9 +170,10 @@ public class HomeScreen : IScreen
             ConsoleKey.D1 => CommandTypes.Status,
             ConsoleKey.D2 => CommandTypes.Inventory,
             ConsoleKey.X => CommandTypes.Exit,
+            ConsoleKey.Enter => CommandTypes.Interaction,
             _ => CommandTypes.Wrong
         };
-        
+
         switch (command)
         {
             case CommandTypes.Exit:
@@ -194,34 +185,99 @@ public class HomeScreen : IScreen
             case CommandTypes.Status:
                 _navToStatusScreen();
                 break;
-            case CommandTypes.MoveUp:
-                WriteLine("이동");
-                break;
-            case CommandTypes.MoveDown:
-                WriteLine("이동");
-                break;
-            case CommandTypes.MoveLeft:
-                WriteLine("이동");
-                break;
-            case CommandTypes.MoveRight:
-                WriteLine("이동");
-                break;
-            case CommandTypes.Wrong:
-                ForegroundColor = ConsoleColor.Red;
-                Write("삐빅! 잘못된 입력입니다.");
-                ResetColor();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
-        Thread.Sleep(500);
+
+        _vm.OnCommand(command);
         var isExit = command is CommandTypes.Exit or CommandTypes.Inventory or CommandTypes.Status;
-        
+
         return !isExit;
     }
 
     public void DrawScreen()
     {
+        if (_vm.Error != null)
+        {
+            WrongMessage(_vm.Error);
+            _vm.ConsumeError();
+        }
+
         DisplayHomeScreen();
+
+        if (_vm.State.CurrentInteractionNpc != null)
+        {
+            DisplayInteraction(_vm.State.CurrentInteractionNpc.InteractionMessage);
+        }
+    }
+
+    private void WrongMessage(string msg)
+    {
+        var centerX = HomeViewModel.MapWidth / 2;
+        var centerY = HomeViewModel.MapHeight / 2;
+        var msgLen = msg.Length;
+
+        var left = _marginStart + centerX - DialogWidth / 2;
+        var top = _marginTop + centerY - DialogHeight / 2;
+        SetCursorPosition(left, top);
+        for (var y = 0; y < DialogHeight; y++)
+        {
+            for (var x = 0; x < DialogWidth; x++)
+            {
+                if (y == 0 || y == DialogHeight - 1)
+                {
+                    Write("-");
+                }
+                else if (x == 0 || x == DialogWidth - 1)
+                {
+                    Write("|");
+                }
+                else
+                {
+                    Write(" ");
+                }
+            }
+
+            WriteLine();
+            SetCursorPosition(left, CursorTop);
+        }
+
+        ForegroundColor = ConsoleColor.Red;
+        Beep();
+        SetCursorPosition(left + msgLen / 2, top + DialogHeight / 2);
+        Write(msg);
+        ResetColor();
+        Thread.Sleep(700);
+    }
+
+    private void DisplayInteraction(string interactionMessage)
+    {
+        var left = _marginStart;
+        var top = _marginTop + _height + CommandHeight;
+        var centerY = _marginTop + _height + CommandHeight + InteractionMessageHeight / 2;
+
+        SetCursorPosition(left, top);
+        for (var y = 0; y < InteractionMessageHeight; y++)
+        {
+            for (var x = 0; x < InteractionMessageWidth; x++)
+            {
+                if (y == 0 || y == InteractionMessageHeight - 1)
+                {
+                    Write("-");
+                }
+                else if (x == 0 || x == InteractionMessageWidth - 1)
+                {
+                    Write("|");
+                }
+                else
+                {
+                    Write(" ");
+                }
+            }
+
+            WriteLine();
+            SetCursorPosition(left, CursorTop);
+        }
+
+        SetCursorPosition(left + 1, centerY);
+        WriteLine(interactionMessage);
     }
 }
