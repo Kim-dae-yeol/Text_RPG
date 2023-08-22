@@ -41,7 +41,9 @@ public class ScreenDisplay
                 {
                     DisplayOnExit();
                     _backStack.Pop();
-                }),
+                },
+                navToEnhancement: () => { },
+                navToShop: () => { }),
 
             ScreenType.Status => new StatusScreen(
                 marginStart: 0,
