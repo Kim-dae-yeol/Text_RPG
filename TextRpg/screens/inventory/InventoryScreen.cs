@@ -1,4 +1,5 @@
 using TextRpg.model;
+using TextRpg.screens.status;
 using static System.Console;
 
 namespace TextRpg.screens.inventory;
@@ -132,10 +133,11 @@ public class InventoryScreen : IScreen
         var itemSlotStart = DescriptionWidth + 1;
         const int itemSlotTop = CommandHeight + 1;
         DisplayItemSlots(itemSlotStart + 1, itemSlotTop);
-        DisplayItems(_vm.State.Items, itemSlotStart + 1, itemSlotTop);
+        DisplayItems(_vm.State.Items, _vm.EquipType, itemSlotStart + 1, itemSlotTop);
 
         if (_vm.Error != null)
         {
+            WrongMessage(_vm.Error);
             _vm.ConsumeError();
         }
     }
@@ -206,7 +208,11 @@ public class InventoryScreen : IScreen
         }
     }
 
-    private void DisplayItems(IReadOnlyList<IItem> items, int itemSlotStart, int itemSlotTop)
+    private void DisplayItems(
+        IReadOnlyList<IItem> items,
+        StatusScreen.EquipmentSlotType? equipType,
+        int itemSlotStart,
+        int itemSlotTop)
     {
         for (var row = 0; row < ItemSlotRows; row++)
         {
@@ -214,11 +220,17 @@ public class InventoryScreen : IScreen
             {
                 var currentItem = items[row * ItemSlotCols + col];
                 if (currentItem == IItem.Empty) continue;
+
                 ForegroundColor = currentItem.Grade.GetColor();
+                if (equipType != null && !equipType.ToString()!.Contains(currentItem.Type.ToString()))
+                {
+                    ForegroundColor = ConsoleColor.DarkGray;
+                }
+
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: itemSlotTop + 1 + row * HeightPerSlot);
-                
+
                 var nameHead = _vm.IsEquipped(currentItem) ? "[ E ]" : "•";
                 WriteLine($"{nameHead} {currentItem.Name,-9}");
                 SetCursorPosition(
@@ -238,10 +250,50 @@ public class InventoryScreen : IScreen
         int marginStart,
         int marginTop,
         Action onBackPressed,
-        IItem.ItemType equipType)
+        StatusScreen.EquipmentSlotType? equipType)
     {
         var screen = new InventoryScreen(marginStart, marginTop, onBackPressed);
         screen._vm.EquipType = equipType;
         return screen;
+    }
+
+    private void WrongMessage(string msg)
+    {
+        var dialogWidth = 50;
+        var dialogHeight = 3;
+        var centerX = ScreenWidth / 2;
+        var centerY = ScreenHeight / 2;
+
+        var left = centerX - dialogWidth / 2;
+        var top = centerY - dialogHeight / 2;
+
+        SetCursorPosition(left, top);
+        for (var y = 0; y < dialogHeight; y++)
+        {
+            for (var x = 0; x < dialogWidth; x++)
+            {
+                if (y == 0 || y == dialogHeight - 1)
+                {
+                    Write("-");
+                }
+                else if (x == 0 || x == dialogWidth - 1)
+                {
+                    Write("|");
+                }
+                else
+                {
+                    Write(" ");
+                }
+            }
+
+            WriteLine();
+            SetCursorPosition(left, CursorTop);
+        }
+
+        ForegroundColor = ConsoleColor.Red;
+        SetCursorPosition(centerX - msg.Length, centerY);
+        WriteLine(msg);
+        ResetColor();
+        Thread.Sleep(500);
     }
 }

@@ -1,6 +1,7 @@
 using TextRpg.data;
 using TextRpg.model;
 using TextRpg.model.items;
+using TextRpg.screens.status;
 
 namespace TextRpg.screens.inventory;
 
@@ -16,7 +17,7 @@ public class InventoryViewModel
     public InventoryState State { get; private set; }
     public string? Error { get; private set; } = null;
 
-    public IItem.ItemType EquipType = IItem.ItemType.Nothing;
+    public StatusScreen.EquipmentSlotType? EquipType = null;
 
     public InventoryViewModel()
     {
@@ -30,9 +31,27 @@ public class InventoryViewModel
         switch (command)
         {
             case InventoryScreen.Command.Equip:
-                if (State.CurrentSelectedItem != null)
+                var currentSelectedType = State.CurrentSelectedItem?.Type.ToString() ?? string.Empty;
+                if (State.CurrentSelectedItem != null && State.CurrentSelectedItem != IItem.Empty)
                 {
-                    State.player.EquipItem(State.CurrentSelectedItem);
+                    if (EquipType == null)
+                    {
+                        //EquipType?.ToString()
+                        //.Contains(currentSelectedType)
+                        State.player.EquipItem(State.CurrentSelectedItem);
+                    }
+                    else if (EquipType.ToString().Contains(currentSelectedType))
+                    {
+                        State.player.EquipItemToSlot(State.CurrentSelectedItem, EquipType);
+                    }
+                    else
+                    {
+                        Error = "착용할 수 없는 장비입니다";
+                    }
+                }
+                else
+                {
+                    Error = "비어있는 아이템은 착용할 수 없습니다";
                 }
 
                 break;
