@@ -41,7 +41,9 @@ public class ScreenDisplay
                 {
                     DisplayOnExit();
                     _backStack.Pop();
-                }),
+                },
+                navToEnhancement: () => { Console.WriteLine("강화!");Thread.Sleep(500); },
+                navToShop: () => {Console.WriteLine("상점!!");Thread.Sleep(500); }),
 
             ScreenType.Status => new StatusScreen(
                 marginStart: 0,
