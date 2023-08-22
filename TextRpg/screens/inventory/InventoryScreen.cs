@@ -206,7 +206,7 @@ public class InventoryScreen : IScreen
         }
     }
 
-    private void DisplayItems(List<IItem> items, int itemSlotStart, int itemSlotTop)
+    private void DisplayItems(IReadOnlyList<IItem> items, int itemSlotStart, int itemSlotTop)
     {
         for (var row = 0; row < ItemSlotRows; row++)
         {
@@ -218,7 +218,9 @@ public class InventoryScreen : IScreen
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: itemSlotTop + 1 + row * HeightPerSlot);
-                WriteLine($"•{currentItem.Name,-9}");
+                
+                var nameHead = _vm.IsEquipped(currentItem) ? "[ E ]" : "•";
+                WriteLine($"{nameHead} {currentItem.Name,-9}");
                 SetCursorPosition(
                     left: itemSlotStart + 1 + col * WidthPerSlot,
                     top: CursorTop);
