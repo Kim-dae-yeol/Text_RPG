@@ -144,7 +144,7 @@ public class Character
     public void UnEquipItem(IItem? item)
     {
         if (item == null || item == IItem.Empty || !IsEquipped(item)) return;
-
+        
         switch (item.Type)
         {
             case IItem.ItemType.Weapon:

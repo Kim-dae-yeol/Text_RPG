@@ -10,12 +10,12 @@ public class StatusViewModel
 
     private StatusState State { get; set; }
     public StatusScreen.EquipmentSlotType CurrentSelected => State.CurrentSelected;
-    public Equipment Equipment => State.player.Equipment;
+    public Equipment Equipment => State.Player.Equipment;
 
     public StatusViewModel()
     {
         State = new StatusState(
-            player: _repo.player,
+            Player: _repo.player,
             Tree: InitTree());
     }
 
@@ -24,7 +24,7 @@ public class StatusViewModel
         switch (command)
         {
             case StatusScreen.Command.UnEquip:
-                // todo unEquip current selection
+                UnEquip(CurrentSelected);
                 break;
             case StatusScreen.Command.MoveUp:
                 if (State.Tree.Up != null)
@@ -105,18 +105,50 @@ public class StatusViewModel
 
     public Dictionary<IItem.ItemEffect, int> AddedItemEffects()
     {
-        return State.player.AddedItemEffects();
+        return State.Player.AddedItemEffects();
     }
 
     public Character ReadOnlyPlayerInfo()
     {
         //todo copy this object 
-        return State.player;
+        return State.Player;
+    }
+
+    private void UnEquip(StatusScreen.EquipmentSlotType type)
+    {
+        switch (type)
+        {
+            case StatusScreen.EquipmentSlotType.Helm:
+                _repo.player.UnEquipItem(State.Player.Equipment.Helm);
+                break;
+            case StatusScreen.EquipmentSlotType.Necklace:
+                _repo.player.UnEquipItem(State.Player.Equipment.Necklace);
+                break;
+            case StatusScreen.EquipmentSlotType.Weapon:
+                _repo.player.UnEquipItem(State.Player.Equipment.Weapon);
+                break;
+            case StatusScreen.EquipmentSlotType.Armor:
+                _repo.player.UnEquipItem(State.Player.Equipment.Armor);
+                break;
+            case StatusScreen.EquipmentSlotType.SubWeapon:
+                _repo.player.UnEquipItem(State.Player.Equipment.SubWeapon);
+                break;
+            case StatusScreen.EquipmentSlotType.Ring1:
+                _repo.player.UnEquipItem(State.Player.Equipment.Ring1);
+                break;
+            case StatusScreen.EquipmentSlotType.Ring2:
+                _repo.player.UnEquipItem(State.Player.Equipment.Ring2);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+
+        State = State with { Player = _repo.player };
     }
 }
 
 public record StatusState(
-    Character player,
+    Character Player,
     IDirectionTree<StatusScreen.EquipmentSlotType> Tree)
 {
     public StatusScreen.EquipmentSlotType CurrentSelected => Tree.Current;

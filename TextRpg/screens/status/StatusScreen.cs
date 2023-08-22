@@ -83,7 +83,8 @@ public class StatusScreen : IScreen
             case Command.Equip:
                 _navToInventory(_selectedSlot);
                 return false;
-            case Command.UnEquip: throw new NotImplementedException();
+            case Command.UnEquip:
+                return true;
             case Command.Wrong:
                 WrongMessage();
                 return true;
@@ -138,7 +139,6 @@ public class StatusScreen : IScreen
         DrawCommands();
 
         DrawSlots();
-        // todo : c to _vm.State.player
         DrawCharacterInformation();
     }
 

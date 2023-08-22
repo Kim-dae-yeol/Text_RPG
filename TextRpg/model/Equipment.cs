@@ -15,7 +15,7 @@ public class Equipment
         get => _helm;
         set
         {
-            if (value.Type == IItem.ItemType.Helm)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.Helm)
             {
                 _helm = value;
             }
@@ -27,7 +27,7 @@ public class Equipment
         get => _necklace;
         set
         {
-            if (value.Type == IItem.ItemType.Necklace)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.Necklace)
             {
                 _necklace = value;
             }
@@ -39,7 +39,7 @@ public class Equipment
         get => _armor;
         set
         {
-            if (value.Type == IItem.ItemType.Armor)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.Armor)
             {
                 _armor = value;
             }
@@ -51,7 +51,7 @@ public class Equipment
         get => _weapon;
         set
         {
-            if (value.Type == IItem.ItemType.Weapon)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.Weapon)
             {
                 _weapon = value;
             }
@@ -63,7 +63,7 @@ public class Equipment
         get => _subWeapon;
         set
         {
-            if (value.Type == IItem.ItemType.SubWeapon)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.SubWeapon)
             {
                 _subWeapon = value;
             }
@@ -75,7 +75,7 @@ public class Equipment
         get => _ring1;
         set
         {
-            if (value.Type == IItem.ItemType.Ring)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.Ring)
             {
                 _ring1 = value;
             }
@@ -87,7 +87,7 @@ public class Equipment
         get => _ring2;
         set
         {
-            if (value.Type == IItem.ItemType.Ring)
+            if (value.Type is IItem.ItemType.Nothing or IItem.ItemType.Ring)
             {
                 _ring2 = value;
             }
