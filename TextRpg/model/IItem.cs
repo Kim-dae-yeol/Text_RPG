@@ -75,7 +75,17 @@ public interface IItem
         ChainMail,
         ShapeOfSpirit,
         GargoyleArmor,
-        HeartOfGiant
+        HeartOfGiant,
+        WoodenShield,
+        ChainShield,
+        PeltaLunata,
+        Stormshield,
+        SpiritWard,
+        PearlNecklace, // rare
+        DiamondNecklace, // epic
+        AtmaScarab, // legendary
+        HighlordWrath, // mythic
+        
     }
 
     public enum ItemEffect
