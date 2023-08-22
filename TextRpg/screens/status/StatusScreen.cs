@@ -82,7 +82,9 @@ public class StatusScreen : IScreen
                 _navToInventory(_selectedSlot);
                 return false;
             case Command.UnEquip: throw new NotImplementedException();
-            case Command.Wrong: throw new NotImplementedException();
+            case Command.Wrong:
+                WrongMessage();
+                return true;
             case Command.MoveUp:
                 return true;
             case Command.MoveDown:
@@ -261,5 +263,46 @@ public class StatusScreen : IScreen
             EquipmentSlotType.Ring2 => "반지 2",
             _ => throw new ArgumentOutOfRangeException(nameof(slotType), slotType, null)
         };
+    }
+
+    private void WrongMessage()
+    {
+        var dialogWidth = 30;
+        var dialogHeight = 3;
+        var centerX = ScreenWidth / 2;
+        var centerY = ScreenHeight / 2;
+
+        var left = centerX - dialogWidth / 2;
+        var top = centerY - dialogHeight / 2;
+
+        SetCursorPosition(left, top);
+        for (var y = 0; y < dialogHeight; y++)
+        {
+            for (var x = 0; x < dialogWidth; x++)
+            {
+                if (y == 0 || y == dialogHeight - 1)
+                {
+                    Write("-");
+                }
+                else if (x == 0 || x == dialogWidth - 1)
+                {
+                    Write("|");
+                }
+                else
+                {
+                    Write(" ");
+                }
+            }
+
+            WriteLine();
+            SetCursorPosition(left, CursorTop);
+        }
+
+        var msg = "잘못된 입력입니다.";
+        ForegroundColor = ConsoleColor.Red;
+        SetCursorPosition(centerX - msg.Length, centerY);
+        WriteLine(msg);
+        ResetColor();
+        Thread.Sleep(1500);
     }
 }
