@@ -22,6 +22,7 @@ public interface IItem
         Mythic
     }
 
+    public string GUID { get; init; }
     public int ID { get; }
     public string Name { get; }
     public string Description { get; }
@@ -40,7 +41,8 @@ public interface IItem
 
     private class EmptyItem : IItem
     {
-        public int ID { get; } = (int)ItemIds.Empty;
+        public string GUID { get; init; } = "";
+        public int ID => (int)ItemIds.Empty;
         public string Name => "";
         public string Description => "";
         public string Effect1Desc => "";
@@ -52,15 +54,20 @@ public interface IItem
         public int Enhancement => 0;
         public ItemType Type => ItemType.Nothing;
         public ItemGrade Grade => ItemGrade.Normal;
+        
+        //todo OnEquip 제거하기
         public Func<Character> OnEquip => null;
     }
 
     public enum ItemIds
     {
         Empty = 0,
-        Guinsoo,
         LongSword,
-        Dagger,
+        PoisonDagger,
+        BestFriendSword,
+        BloodThirster,
+        Guinsoo,
+        
     }
 
     public enum ItemEffect
@@ -69,6 +76,8 @@ public interface IItem
         Speed,
         Hp,
         Critical,
+        Defence,
         Unique
     }
+    
 }

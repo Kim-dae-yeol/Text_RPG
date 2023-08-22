@@ -39,7 +39,8 @@ public class StatusScreen : IScreen
     private const int HeightPerSlot = 4;
 
     private StatusViewModel _vm = new();
-    private EquipmentSlotType _selectedSlot => _vm.State.currentSelected;
+    private EquipmentSlotType _selectedSlot => _vm.CurrentSelected;
+    private Equipment _equipment => _vm.Equipment;
     private int _marginStart { get; }
     private int _marginTop { get; }
     private Action _onBackPressed;
@@ -138,8 +139,7 @@ public class StatusScreen : IScreen
 
         DrawSlots();
         // todo : c to _vm.State.player
-        var c = new Character();
-        DrawCharacterInformation(c);
+        DrawCharacterInformation();
     }
 
     private void DrawCommands()
@@ -207,51 +207,52 @@ public class StatusScreen : IScreen
     private void DrawSlots()
     {
         // todo : indexX, indexY 를 지정해서 그걸 이용해서 WidthPerSlot 을 곱해서 해당 함수 호출
-        // todo : _vm 의 상태값으로 해당 값을 전달하도록. 
         DrawSlot(
             startPos: _marginStart + WidthPerSlot + 1,
             topPos: _marginTop + CommandHeight + 1,
             slotType: EquipmentSlotType.Helm,
-            item: IItem.Empty
+            item: _equipment.Helm
         );
 
         DrawSlot(
             startPos: _marginStart + WidthPerSlot * 2 + 3,
             topPos: _marginTop + HeightPerSlot + CommandHeight + 2,
             slotType: EquipmentSlotType.Necklace,
-            item: IItem.Empty
+            item: _equipment.Necklace
         );
 
         DrawSlot(
             startPos: _marginStart + 1,
             topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.Weapon,
-            item: new Guinsoo()
+            item: _equipment.Weapon
         );
         DrawSlot(
             startPos: _marginStart + WidthPerSlot + 2,
             topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.Armor,
-            item: IItem.Empty
+            item: _equipment.Armor
         );
         DrawSlot(
             startPos: _marginStart + WidthPerSlot * 2 + 3,
             topPos: _marginTop + HeightPerSlot * 2 + CommandHeight + 3,
             slotType: EquipmentSlotType.SubWeapon,
-            item: IItem.Empty
+            item: _equipment.SubWeapon
         );
         DrawSlot(
             startPos: _marginStart + 1,
             topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 4,
             slotType: EquipmentSlotType.Ring1,
-            item: IItem.Empty
+            item: _equipment.Ring1
         );
         DrawSlot(
             startPos: _marginStart + WidthPerSlot * 2 + 3,
             topPos: _marginTop + HeightPerSlot * 3 + CommandHeight + 4,
             slotType: EquipmentSlotType.Ring2,
-            item: IItem.Empty
+            item: _equipment.Ring2
         );
+
+
         // todo : Skills Slot -> 중요도 [하]
     }
 
@@ -311,14 +312,16 @@ public class StatusScreen : IScreen
         Thread.Sleep(1500);
     }
 
-    private void DrawCharacterInformation(Character c)
+    private void DrawCharacterInformation()
     {
         var left = _marginStart + SlotsWidth + 10 + 1;
         var top = CommandHeight + 1 + 5;
+        var appliedEffects = _vm.AddedItemEffects();
+        var c = _vm.ReadOnlyPlayerInfo();
         SetCursorPosition(left, top);
 
         Write($"{" • Name",-20}");
-        WriteLine($"| {c.Name}");
+        WriteLine($"| {c.Name} ( {c.Job} )");
         SetCursorPosition(left, CursorTop);
 
         Write($"{" • Lv",-20}");
@@ -329,20 +332,76 @@ public class StatusScreen : IScreen
         WriteLine($"| {c.Exp} / {c.LevelUpExp}");
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Hp",-20}");
-        WriteLine($"| {c.Hp}");
+        Write($"{" • Hp ",-20}");
+        Write($"| {c.Hp}");
+
+        //todo color to method
+        var addedHp = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Hp, 0);
+        if (addedHp != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedHp} )");
+            ResetColor();
+        }
+
+        WriteLine();
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Atk",-20}");
-        WriteLine($"| {c.Atk}");
+        Write($"{" • Atk ",-20}");
+        Write($"| {c.Atk}");
+        var addedAtk = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Atk, 0);
+        if (addedAtk != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedAtk} )");
+            ResetColor();
+        }
+
+        WriteLine();
+        SetCursorPosition(left, CursorTop);
+        Write($"{" • Defence ",-20}");
+        Write($"| {c.Defence}");
+
+        //todo color to method
+        var addedDef = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Defence, 0);
+        if (addedDef != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedDef} )");
+            ResetColor();
+        }
+
+        WriteLine();
+        SetCursorPosition(left, CursorTop);
+        Write($"{" • Speed ",-20}");
+        Write($"| {c.Speed:N2}");
+
+        var addedSpd = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Speed, 0);
+        if (addedSpd != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedSpd} )");
+            ResetColor();
+        }
+
+        WriteLine();
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Speed",-20}");
-        WriteLine($"| {c.Speed:N2}");
+        Write($"{" • Critical ",-20}");
+        Write($"| {c.Critical}");
+
+        var addedCri = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Critical, 0);
+        if (addedCri != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedCri} )");
+            ResetColor();
+        }
+
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Critical",-20}");
-        WriteLine($"| {c.Critical}");
+        Write($"{" • Gold ",-20}");
+        WriteLine($"| {c.Gold}");
         SetCursorPosition(left, CursorTop);
     }
 }

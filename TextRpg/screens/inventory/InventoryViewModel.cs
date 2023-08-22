@@ -20,8 +20,9 @@ public class InventoryViewModel
 
     public InventoryViewModel()
     {
-        var items = _repo.GetInventoryItems(HeightIndex + 1, WidthIndex + 1);
-        State = new InventoryState(0, 0, items);
+        var items = _repo.GetInventoryItems();
+        var player = _repo.player;
+        State = new InventoryState(0, 0, player: player, items);
     }
 
     public void OnCommand(InventoryScreen.Command command)
@@ -29,7 +30,11 @@ public class InventoryViewModel
         switch (command)
         {
             case InventoryScreen.Command.Equip:
-                // todo : 인벤토리 장착 하려면 상태창 만들고 하기 !!
+                if (State.CurrentSelectedItem != null)
+                {
+                    State.player.EquipItem(State.CurrentSelectedItem);
+                }
+
                 break;
             case InventoryScreen.Command.Exit:
                 // do nothing
@@ -71,12 +76,10 @@ public class InventoryViewModel
             case InventoryScreen.Command.Throw:
                 if (State.IsCurrentSelectedItemExist)
                 {
-                    var deletedAtSelection = State.Items;
-                    deletedAtSelection[State.CurrentY * (WidthIndex + 1) + State.CurrentX] = IItem.Empty;
-
+                    State.player.ThrowItem(State.CurrentSelectedItem!);
                     State = State with
                     {
-                        Items = deletedAtSelection
+                        Items = _repo.GetInventoryItems()
                     };
                 }
 
@@ -95,12 +98,18 @@ public class InventoryViewModel
     {
         Error = null;
     }
+
+    public bool IsEquipped(IItem item)
+    {
+        return State.player.IsEquipped(item);
+    }
 }
 
 public record InventoryState(
     int CurrentX,
     int CurrentY,
-    List<IItem> Items
+    Character player,
+    IReadOnlyList<IItem> Items
 )
 {
     public IItem? CurrentSelectedItem =>
