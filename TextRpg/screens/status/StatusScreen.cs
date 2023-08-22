@@ -139,8 +139,7 @@ public class StatusScreen : IScreen
 
         DrawSlots();
         // todo : c to _vm.State.player
-        var c = new Character();
-        DrawCharacterInformation(c);
+        DrawCharacterInformation();
     }
 
     private void DrawCommands()
@@ -252,8 +251,8 @@ public class StatusScreen : IScreen
             slotType: EquipmentSlotType.Ring2,
             item: _equipment.Ring2
         );
-        
-        
+
+
         // todo : Skills Slot -> 중요도 [하]
     }
 
@@ -313,14 +312,16 @@ public class StatusScreen : IScreen
         Thread.Sleep(1500);
     }
 
-    private void DrawCharacterInformation(Character c)
+    private void DrawCharacterInformation()
     {
         var left = _marginStart + SlotsWidth + 10 + 1;
         var top = CommandHeight + 1 + 5;
+        var appliedEffects = _vm.AddedItemEffects();
+        var c = _vm.ReadOnlyPlayerInfo();
         SetCursorPosition(left, top);
 
         Write($"{" • Name",-20}");
-        WriteLine($"| {c.Name}");
+        WriteLine($"| {c.Name} ( {c.Job} )");
         SetCursorPosition(left, CursorTop);
 
         Write($"{" • Lv",-20}");
@@ -331,20 +332,76 @@ public class StatusScreen : IScreen
         WriteLine($"| {c.Exp} / {c.LevelUpExp}");
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Hp",-20}");
-        WriteLine($"| {c.Hp}");
+        Write($"{" • Hp ",-20}");
+        Write($"| {c.Hp}");
+
+        //todo color to method
+        var addedHp = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Hp, 0);
+        if (addedHp != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedHp} )");
+            ResetColor();
+        }
+
+        WriteLine();
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Atk",-20}");
-        WriteLine($"| {c.Atk}");
+        Write($"{" • Atk ",-20}");
+        Write($"| {c.Atk}");
+        var addedAtk = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Atk, 0);
+        if (addedAtk != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedAtk} )");
+            ResetColor();
+        }
+
+        WriteLine();
+        SetCursorPosition(left, CursorTop);
+        Write($"{" • Defence ",-20}");
+        Write($"| {c.Defence}");
+
+        //todo color to method
+        var addedDef = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Defence, 0);
+        if (addedDef != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedDef} )");
+            ResetColor();
+        }
+
+        WriteLine();
+        SetCursorPosition(left, CursorTop);
+        Write($"{" • Speed ",-20}");
+        Write($"| {c.Speed:N2}");
+
+        var addedSpd = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Speed, 0);
+        if (addedSpd != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedSpd} )");
+            ResetColor();
+        }
+
+        WriteLine();
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Speed",-20}");
-        WriteLine($"| {c.Speed:N2}");
+        Write($"{" • Critical ",-20}");
+        Write($"| {c.Critical}");
+
+        var addedCri = appliedEffects.GetValueOrDefault(IItem.ItemEffect.Critical, 0);
+        if (addedCri != 0)
+        {
+            ForegroundColor = ConsoleColor.Yellow;
+            Write($"( + {addedCri} )");
+            ResetColor();
+        }
+
         SetCursorPosition(left, CursorTop);
 
-        Write($"{" • Critical",-20}");
-        WriteLine($"| {c.Critical}");
+        Write($"{" • Gold ",-20}");
+        WriteLine($"| {c.Gold}");
         SetCursorPosition(left, CursorTop);
     }
 }

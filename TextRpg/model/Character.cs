@@ -8,11 +8,13 @@ namespace TextRpg.model;
 public class Character
 {
     public string Name = "GIGA Chad";
+    public string Job = "전사";
     public Equipment Equipment = new();
     public int Level = 1;
     public int Exp = 0;
     public int LevelUpExp = 100;
     public int Hp = 100;
+    public int Defence = 30;
     public int Atk = 22;
     public float Speed = 1.0f;
     public int Critical = 0;
@@ -114,7 +116,7 @@ public class Character
     public void UnEquipItem(IItem? item)
     {
         if (item == null || item == IItem.Empty || !IsEquipped(item)) return;
-        
+
         switch (item.Type)
         {
             case IItem.ItemType.Weapon:

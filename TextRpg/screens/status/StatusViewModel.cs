@@ -1,18 +1,15 @@
 using TextRpg.data;
 using TextRpg.model;
-using TextRpg.screens.status;
 using TextRpg.util;
 
-namespace TextRpg.screens;
+namespace TextRpg.screens.status;
 
 public class StatusViewModel
 {
     private Repository _repo = Repository.GetInstance();
 
-    // todo player 정보를 repository 에서 가져온다.
-    // todo : 상태 정의 및 로직 처리
     private StatusState State { get; set; }
-    public StatusScreen.EquipmentSlotType CurrentSelected => State.currentSelected;
+    public StatusScreen.EquipmentSlotType CurrentSelected => State.CurrentSelected;
     public Equipment Equipment => State.player.Equipment;
 
     public StatusViewModel()
@@ -102,14 +99,24 @@ public class StatusViewModel
         helm.Down = armor;
         return helm;
     }
+
+    public Dictionary<IItem.ItemEffect, int> AddedItemEffects()
+    {
+        return State.player.AddedItemEffects();
+    }
+
+    public Character ReadOnlyPlayerInfo()
+    {
+        //todo copy this object 
+        return State.player;
+    }
 }
 
 public record StatusState(
     Character player,
     IDirectionTree<StatusScreen.EquipmentSlotType> Tree)
 {
-    public Dictionary<StatusScreen.EquipmentSlotType, IItem> Items;
-    public StatusScreen.EquipmentSlotType currentSelected => Tree.Current;
+    public StatusScreen.EquipmentSlotType CurrentSelected => Tree.Current;
 }
 
 public class SlotDirectionTree : IDirectionTree<StatusScreen.EquipmentSlotType>
