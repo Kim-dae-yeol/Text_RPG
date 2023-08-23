@@ -20,7 +20,6 @@
    <br>
 
    - 인벤토리
-  <br>
  인벤토리 페이지에서는 아이템을 장착하거나 인벤토리의 아이템을 버리거나 인벤토리를 정렬할 수 있습니다. 인벤토리의 최대칸은 15개입니다.
     <img width="640" alt="StatusToInventory2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/e0c9708b-afe8-41aa-8732-1969bb32ea4a"><br>
     <img width="640" alt="statusToInventory1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/53bfa205-1615-45e8-81c7-4960d5dc8971"><br>
@@ -33,6 +32,8 @@
 <img width="640" alt="Town2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/904fb98b-9fad-4dbc-a8c6-bb8c9c34b147">
 <img width="640" alt="Town" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/874a3861-e1be-4968-92c2-2f4259955ec2">
 <br>
+
+
  - 던전<br>
  던전 기능은 시간의 부족함으로 비교적 부실하게 구현되었습니다. 레벨디자인및 클리어 조건도 부실하지만 게임내부에서 돈을 벌 수 있습니다 
 <img width="640" alt="Dungeon" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/6dde93c3-17d3-4928-ab13-c0f9c1432d27">
