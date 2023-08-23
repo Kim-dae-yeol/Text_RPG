@@ -19,6 +19,7 @@
    <img width="640" alt="status2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/b8b1dbb2-e271-44af-893a-8217ebab7601">
    <br>
    - 인벤토리
+  <br>
  인벤토리 페이지에서는 아이템을 장착하거나 인벤토리의 아이템을 버리거나 인벤토리를 정렬할 수 있습니다. 인벤토리의 최대칸은 15개입니다.
     <img width="640" alt="StatusToInventory2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/e0c9708b-afe8-41aa-8732-1969bb32ea4a"><br>
     <img width="640" alt="statusToInventory1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/53bfa205-1615-45e8-81c7-4960d5dc8971"><br>
