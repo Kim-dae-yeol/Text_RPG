@@ -9,13 +9,13 @@ public class Guinsoo : IItem
 
     public string Effect1Desc => $"공격 속도 {45 + Enhancement * 10}%";
 
-    public string Effect2Desc => $"치명타 확률 {20 + Enhancement * 2}%";
+    public string Effect2Desc => $"치명타 확률 {20 + Enhancement * 5}%";
 
-    public string Effect3Desc => $"공격력 {60 + Enhancement * 20}";
+    public string Effect3Desc => $"공격력 {600 + Enhancement * 200}";
 
     public KeyValuePair<IItem.ItemEffect, int>? Effect1 => new(IItem.ItemEffect.Speed, 45 + Enhancement * 10);
-    public KeyValuePair<IItem.ItemEffect, int>? Effect2 => new(IItem.ItemEffect.Critical, 20 + Enhancement * 2);
-    public KeyValuePair<IItem.ItemEffect, int>? Effect3 => new(IItem.ItemEffect.Atk, 60 + Enhancement * 2);
+    public KeyValuePair<IItem.ItemEffect, int>? Effect2 => new(IItem.ItemEffect.Critical, 20 + Enhancement * 5);
+    public KeyValuePair<IItem.ItemEffect, int>? Effect3 => new(IItem.ItemEffect.Atk, 600 + Enhancement * 200);
 
     public int Enhancement { get; set; } = 0;
 

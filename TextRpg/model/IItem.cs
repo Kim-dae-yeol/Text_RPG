@@ -1,5 +1,6 @@
 using TextRpg.model.items;
 using TextRpg.model.items.armor;
+using TextRpg.model.items.subWeapon;
 using TextRpg.model.items.weapon;
 
 namespace TextRpg.model;
@@ -34,6 +35,20 @@ public interface IItem
     public string Effect2Desc { get; }
     public string Effect3Desc { get; }
 
+    public int Price()
+    {
+        var price = Grade switch
+        {
+            ItemGrade.Normal => 1_000,
+            ItemGrade.Rare => 10_000,
+            ItemGrade.Epic => 200_000,
+            ItemGrade.Legendary => 1_000_000,
+            ItemGrade.Mythic => 10_000_000,
+            _ => 0
+        };
+        return (int)(Enhancement * 2.0f * (price * 0.25) + price);
+    }
+
     public KeyValuePair<ItemEffect, int>? Effect1 { get; }
     public KeyValuePair<ItemEffect, int>? Effect2 { get; }
     public KeyValuePair<ItemEffect, int>? Effect3 { get; }
@@ -52,12 +67,14 @@ public interface IItem
         public string Effect1Desc => "";
         public string Effect2Desc => "";
         public string Effect3Desc => "";
+        public int Price { get; } = 0;
         public KeyValuePair<ItemEffect, int>? Effect1 => null;
         public KeyValuePair<ItemEffect, int>? Effect2 => null;
         public KeyValuePair<ItemEffect, int>? Effect3 => null;
         public int Enhancement { get; set; } = 0;
         public ItemType Type => ItemType.Nothing;
         public ItemGrade Grade => ItemGrade.Normal;
+
 
         //todo OnEquip 제거하기
         public Func<Character> OnEquip => null;
@@ -81,11 +98,14 @@ public interface IItem
         PeltaLunata,
         Stormshield,
         SpiritWard,
-        PearlNecklace, // rare
-        DiamondNecklace, // epic
-        AtmaScarab, // legendary
-        HighlordWrath, // mythic
-        
+        // PearlNecklace, // rare
+        // DiamondNecklace, // epic
+        // AtmaScarab, // legendary
+        // HighlordWrath, // mythic
+        // GoldenRing,
+        // RavenFrost,
+        // BulKathosWeddingBand,
+        // TheStoneOfJordan //mythic
     }
 
     public enum ItemEffect
@@ -116,15 +136,20 @@ public interface IItem
         {
             ItemIds.Empty => Empty,
             ItemIds.LongSword => new LongSword(),
-            ItemIds.PoisonDagger => new LongSword(),
-            ItemIds.BestFriendSword => new LongSword(),
-            ItemIds.BloodThirster => new LongSword(),
-            ItemIds.Guinsoo => new LongSword(),
+            ItemIds.PoisonDagger => new PoisonDagger(),
+            ItemIds.BestFriendSword => new BestFriendSword(),
+            ItemIds.BloodThirster => new BloodyThirster(),
+            ItemIds.Guinsoo => new Guinsoo(),
             ItemIds.LeatherArmor => new LeatherArmor(),
             ItemIds.ChainMail => new ChainMail(),
             ItemIds.ShapeOfSpirit => new ShapeOfSpirit(),
             ItemIds.GargoyleArmor => new GargoyleArmor(),
             ItemIds.HeartOfGiant => new HeartOfGiant(),
+            ItemIds.WoodenShield => new WoodenShield(),
+            ItemIds.ChainShield => new ChainShield(),
+            ItemIds.PeltaLunata => new PeltaLunata(),
+            ItemIds.Stormshield => new StormShield(),
+            ItemIds.SpiritWard => new SpiritWard(),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

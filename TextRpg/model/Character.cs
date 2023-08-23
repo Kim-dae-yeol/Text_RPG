@@ -144,7 +144,7 @@ public class Character
     public void UnEquipItem(IItem? item)
     {
         if (item == null || item == IItem.Empty || !IsEquipped(item)) return;
-        
+
         switch (item.Type)
         {
             case IItem.ItemType.Weapon:
@@ -188,6 +188,15 @@ public class Character
     public bool IsEquipped(IItem item)
     {
         return Equipment.EquipItems().Find(it => it.Guid == item.Guid) != null;
+    }
+
+    public void BuyItem(IItem item)
+    {
+        var emptyIndex = _inventory.FindIndex(item => item.ID == IItem.Empty.ID);
+        if (emptyIndex != -1)
+        {
+            _inventory[emptyIndex] = item;
+        }
     }
 
     public static Character FromCsv(string? csvLine)

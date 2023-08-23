@@ -3,19 +3,20 @@ namespace TextRpg.model.items;
 public class ShapeOfSpirit : IItem
 {
     public string Guid { get; set; } = System.Guid.NewGuid().ToString();
-    public int ID => (int)IItem.ItemIds.Guinsoo;
-    public string Name { get; } = "구인수의 격노검";
-    public string Description { get; } = "공격력, 치명타확률, 공격속도가 비약적으로 증가합니다.";
+    public int ID => (int)IItem.ItemIds.ShapeOfSpirit;
+    public string Name { get; } = "정령의 형상";
+    public string Description { get; } = "방어력이 비약적으로 상승합니다.";
 
-    public string Effect1Desc => $"공격 속도 {45 + Enhancement * 10}%";
+    public string Effect1Desc => $"방어력 {200 + Enhancement * 50}";
 
-    public string Effect2Desc => $"치명타 확률 {20 + Enhancement * 2}%";
+    public string Effect2Desc => "";
 
-    public string Effect3Desc => $"공격력 {60 + Enhancement * 20}";
+    public string Effect3Desc => "";
 
-    public KeyValuePair<IItem.ItemEffect, int>? Effect1 => new(IItem.ItemEffect.Speed, 45 + Enhancement * 10);
-    public KeyValuePair<IItem.ItemEffect, int>? Effect2 => new(IItem.ItemEffect.Critical, 20 + Enhancement * 2);
-    public KeyValuePair<IItem.ItemEffect, int>? Effect3 => new(IItem.ItemEffect.Atk, 60 + Enhancement * 2);
+
+    public KeyValuePair<IItem.ItemEffect, int>? Effect1 => new(IItem.ItemEffect.Defence, 200 + Enhancement * 50);
+    public KeyValuePair<IItem.ItemEffect, int>? Effect2 => null;
+    public KeyValuePair<IItem.ItemEffect, int>? Effect3 => null;
 
     public int Enhancement { get; set; } = 0;
 
