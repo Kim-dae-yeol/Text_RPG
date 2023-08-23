@@ -12,15 +12,16 @@
   - MVVM 패턴 적용
 ## 📌 주요기능 
  - 상태창
+    상태창에서는 캐릭터의 장비와 현재 스탯을 확인할 수 있습니다. 방향키로 움직이면 장비창에서 이동이 가능합니다. 또한 Enter 를 이용해서 장비 변경이 가능한데 이때 뜨는 인벤토리 창에서는 선택한 장비칸의 아이템만 선택할 수 있도록 처리했습니다.
  <br>
    <img width="640" alt="status1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/6aa98236-22e3-4644-ad36-8338ba89df5d">
    <br>
    <img width="640" alt="status2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/b8b1dbb2-e271-44af-893a-8217ebab7601">
    <br>
  - 인벤토리<br>
-    <img width="1306" alt="StatusToInventory2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/e0c9708b-afe8-41aa-8732-1969bb32ea4a"><img width="640" alt="statusToInventory1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/53bfa205-1615-45e8-81c7-4960d5dc8971">
+    <img width="640" alt="StatusToInventory2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/e0c9708b-afe8-41aa-8732-1969bb32ea4a">
+    <img width="640" alt="statusToInventory1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/53bfa205-1615-45e8-81c7-4960d5dc8971">
 
-    <img width="1283" alt="Inventory" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/152218de-bcfc-401d-961d-78072bacf28b"><img width="640" alt="Throw" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/c62c4678-9e82-4162-b7ce-f951cafa2fb5">
 
 
 
@@ -32,7 +33,7 @@
 <img width="640" alt="Town" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/874a3861-e1be-4968-92c2-2f4259955ec2">
  - 던전<br>
  던전 기능은 시간의 부족함으로 비교적 부실하게 구현되었습니다. 레벨디자인및 클리어 조건도 부실하지만 게임내부에서 돈을 벌 수 있습니다 
-<img width="668" alt="Dungeon" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/6dde93c3-17d3-4928-ab13-c0f9c1432d27">
+<img width="640" alt="Dungeon" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/6dde93c3-17d3-4928-ab13-c0f9c1432d27">
   
  - 저장<br>
 파일 시스템을 이용해서 저장합니다. 프로젝트 내부 csv로 저장하며 코드에서 txt 를 읽어서 역직렬화 합니다. 따라서 보안에는 취약하며 유연하지 못합니다. 로컬 데이터베이스를 이용하면 조금 더 많은 정보를 효율적으로 읽고 쓸 수 있습니다. 
