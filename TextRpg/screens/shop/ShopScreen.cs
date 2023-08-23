@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Threading;
 using static System.Console;
 
 namespace TextRpg.screens.shop;

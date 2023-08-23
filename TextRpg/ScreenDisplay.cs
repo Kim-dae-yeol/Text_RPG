@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices.ComTypes;
 using TextRpg.model;
 using TextRpg.screens;
+using TextRpg.screens.dungeon;
 using TextRpg.screens.home;
 using TextRpg.screens.inventory;
 using TextRpg.screens.shop;
@@ -48,8 +49,8 @@ public class ScreenDisplay
                 },
                 navToEnhancement: () =>
                 {
-                    Console.WriteLine("강화!");
-                    Thread.Sleep(500);
+                    Console.WriteLine("강화는 아직 구현되지 않았습니다...");
+                    Thread.Sleep(1500);
                 },
                 navToShop: () => { _backStack.Push(ScreenType.Shop); },
                 navToDungeon: () => { _backStack.Push(ScreenType.Dungeon); }),
@@ -79,7 +80,7 @@ public class ScreenDisplay
                         .First(slot => slot.ToString() == _navArgs[ArgItemType].ToString())),
             ScreenType.Shop => new ShopScreen(popBackStack: () => { _backStack.Pop(); }),
             ScreenType.Enhancement => throw new NotImplementedException(),
-            ScreenType.Dungeon => throw new NotImplementedException(),
+            ScreenType.Dungeon => new DungeonScreen(popBackStack: () => { _backStack.Pop(); }),
             _ => throw new ArgumentOutOfRangeException()
         };
 

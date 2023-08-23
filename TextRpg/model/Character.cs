@@ -22,6 +22,9 @@ public class Character
     private List<IItem> _inventory = new();
     public IReadOnlyList<IItem> Inventory => _inventory;
     public int Gold = 1500;
+    public int AppliedHp => Hp + AddedItemEffects().GetValueOrDefault(IItem.ItemEffect.Hp, 0);
+    public int AppliedDef => Defence + AddedItemEffects().GetValueOrDefault(IItem.ItemEffect.Defence, 0);
+    
 
     public Character()
     {
