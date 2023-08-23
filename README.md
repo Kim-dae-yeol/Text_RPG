@@ -39,6 +39,6 @@
 <img width="640" alt="Dungeon" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/6dde93c3-17d3-4928-ab13-c0f9c1432d27">
   
  - 저장<br>
-파일 시스템을 이용해서 저장합니다. 프로젝트 내부 csv로 저장하며 코드에서 txt 를 읽어서 역직렬화 합니다. 따라서 보안에는 취약하며 유연하지 못합니다. 로컬 데이터베이스를 이용하면 조금 더 많은 정보를 효율적으로 읽고 쓸 수 있습니다. <br>
+파일 시스템을 이용해서 저장합니다. 프로젝트 내부 csv로 저장하며 코드에서 txt 를 읽어서 메모리상에 올립니다. <br>
 <img width="142" alt="FileSystem" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/19569930-b071-4997-a144-5e85aa021e0b">
 <img width="640" alt="CsvFormat" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/5a22ee3c-9c54-4e49-8708-f6aaeb9f1157"><br>
