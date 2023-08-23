@@ -26,6 +26,7 @@
 
 
 - 마을
+- <br>
 마을에서는 상점을 찾아가거나 강화 (아직 구현 안됨 )와 던전으로 입장 할 수 있습니다. 또한 현재 상태와 인벤토리를 확인할 수 있습니다.
 <img width="640" alt="Town4" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/55719fff-1846-43f1-816d-7402efff54cc">
 <img width="640" alt="Town3" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/251697df-b9c7-4d7a-a962-1b11903aa0c5">
