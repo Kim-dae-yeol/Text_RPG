@@ -13,10 +13,12 @@
 ## 📌 주요기능 
  - 상태창
    <img width="640" alt="status1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/6aa98236-22e3-4644-ad36-8338ba89df5d">
+   <br>
    <img width="640" alt="status2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/b8b1dbb2-e271-44af-893a-8217ebab7601">
+   <br>
  - 인벤토리
-    <img width="1306" alt="StatusToInventory2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/e0c9708b-afe8-41aa-8732-1969bb32ea4<img width="640" alt="statusToInventory1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/53bfa205-1615-45e8-81c7-4960d5dc8971">
-a">
+    <img width="1306" alt="StatusToInventory2" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/e0c9708b-afe8-41aa-8732-1969bb32ea4a"><img width="640" alt="statusToInventory1" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/53bfa205-1615-45e8-81c7-4960d5dc8971">
+
     <img <img width="640" alt="Throw" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/c62c4678-9e82-4162-b7ce-f951cafa2fb5">
 width="1283" alt="Inventory" src="https://github.com/Kim-dae-yeol/Text_RPG/assets/115692722/152218de-bcfc-401d-961d-78072bacf28b">
 
