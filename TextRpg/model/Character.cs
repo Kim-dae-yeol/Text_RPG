@@ -24,7 +24,7 @@ public class Character
     public int Gold = 1500;
     public int AppliedHp => Hp + AddedItemEffects().GetValueOrDefault(IItem.ItemEffect.Hp, 0);
     public int AppliedDef => Defence + AddedItemEffects().GetValueOrDefault(IItem.ItemEffect.Defence, 0);
-    
+
 
     public Character()
     {
@@ -46,10 +46,17 @@ public class Character
 
         foreach (var item in items)
         {
-            if (item.Effect1 != null)
+            if (item.Effect1 != null)2
             {
                 var pair = item.Effect1.Value;
-                dict.Add(pair.Key, pair.Value);
+                if (dict.ContainsKey(pair.Key))
+                {
+                    dict[pair.Key] += pair.Value;
+                }
+                else
+                {
+                    dict.Add(pair.Key, pair.Value);
+                }
             }
 
             if (item.Effect2 != null)
