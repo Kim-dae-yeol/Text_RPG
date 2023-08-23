@@ -26,12 +26,14 @@ public class HomeScreen : IScreen
     private Action _popBackstack;
     private Action _navToEnhancement;
     private Action _navToShop;
+    private Action _navToDungeon;
 
     public HomeScreen(Action navToStatusScreen,
         Action navToInventory,
         Action popBackstack,
         Action navToShop,
         Action navToEnhancement,
+        Action navToDungeon,
         int marginStart = 0,
         int marginTop = 0,
         int width = 60,
@@ -48,6 +50,7 @@ public class HomeScreen : IScreen
         _popBackstack = popBackstack;
         _navToShop = navToShop;
         _navToEnhancement = navToEnhancement;
+        _navToDungeon = navToDungeon;
     }
 
 
@@ -60,7 +63,6 @@ public class HomeScreen : IScreen
 
     private void DrawMap()
     {
-        
         var left = _marginStart + CommandWidth / 2 - HomeViewModel.MapWidth / 2;
         SetCursorPosition(left, _marginTop);
         for (var i = 0; i < HomeViewModel.MapHeight; i++)
@@ -86,7 +88,7 @@ public class HomeScreen : IScreen
                         break;
                     case MapType.Player:
                         ForegroundColor = ConsoleColor.Green;
-                        Write("O");
+                        Write("T");
                         ResetColor();
                         break;
                     case MapType.Npc:
@@ -185,16 +187,38 @@ public class HomeScreen : IScreen
             case CommandTypes.Status:
                 _navToStatusScreen();
                 break;
+            case CommandTypes.Interaction:
+                InteractionWithNpc(_vm.State.CurrentInteractionNpc);
+                break;
         }
 
         _vm.OnCommand(command);
-        var isExit = command is CommandTypes.Exit or CommandTypes.Inventory or CommandTypes.Status;
+
+        var isExit = command is CommandTypes.Exit
+                         or CommandTypes.Inventory
+                         or CommandTypes.Status
+                     || command == CommandTypes.Interaction && _vm.State.CurrentInteractionNpc != null;
 
         return !isExit;
     }
 
     public void DrawScreen()
     {
+        if (_vm.Effect != null)
+        {
+            switch (_vm.Effect)
+            {
+                case HomeViewModel.SideEffect.Shop:
+                    _navToShop();
+                    break;
+                case HomeViewModel.SideEffect.Enhancement:
+                    _navToEnhancement();
+                    break;
+                case HomeViewModel.SideEffect.Dungeon:
+                    break;
+            }
+        }
+
         if (_vm.Error != null)
         {
             WrongMessage(_vm.Error);
@@ -279,5 +303,23 @@ public class HomeScreen : IScreen
 
         SetCursorPosition(left + 1, centerY);
         WriteLine(interactionMessage);
+    }
+
+    private void InteractionWithNpc(Npc? npc)
+    {
+        if (npc == null) return;
+
+        switch (npc.type)
+        {
+            case Npc.NpcType.Shop:
+                _navToShop();
+                break;
+            case Npc.NpcType.Enhancement:
+                _navToEnhancement();
+                break;
+            case Npc.NpcType.Dungeon:
+                _navToDungeon();
+                break;
+        }
     }
 }

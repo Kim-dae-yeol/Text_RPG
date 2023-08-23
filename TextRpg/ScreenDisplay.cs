@@ -3,6 +3,7 @@ using TextRpg.model;
 using TextRpg.screens;
 using TextRpg.screens.home;
 using TextRpg.screens.inventory;
+using TextRpg.screens.shop;
 using TextRpg.screens.status;
 
 namespace TextRpg;
@@ -20,6 +21,9 @@ public class ScreenDisplay
         Status,
         Inventory,
         InventoryToEquip,
+        Shop,
+        Enhancement,
+        Dungeon
     }
 
     public ScreenDisplay()
@@ -42,8 +46,13 @@ public class ScreenDisplay
                     DisplayOnExit();
                     _backStack.Pop();
                 },
-                navToEnhancement: () => { Console.WriteLine("강화!");Thread.Sleep(500); },
-                navToShop: () => {Console.WriteLine("상점!!");Thread.Sleep(500); }),
+                navToEnhancement: () =>
+                {
+                    Console.WriteLine("강화!");
+                    Thread.Sleep(500);
+                },
+                navToShop: () => { _backStack.Push(ScreenType.Shop); },
+                navToDungeon: () => { _backStack.Push(ScreenType.Dungeon); }),
 
             ScreenType.Status => new StatusScreen(
                 marginStart: 0,
@@ -68,6 +77,9 @@ public class ScreenDisplay
                     equipType: Enum
                         .GetValues<StatusScreen.EquipmentSlotType>()
                         .First(slot => slot.ToString() == _navArgs[ArgItemType].ToString())),
+            ScreenType.Shop => new ShopScreen(popBackStack: () => { _backStack.Pop(); }),
+            ScreenType.Enhancement => throw new NotImplementedException(),
+            ScreenType.Dungeon => throw new NotImplementedException(),
             _ => throw new ArgumentOutOfRangeException()
         };
 

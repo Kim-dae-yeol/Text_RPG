@@ -9,4 +9,10 @@
     </PropertyGroup>
 
 
+    <ItemGroup>
+      <Folder Include="model\items\necklacies\" />
+      <Folder Include="model\items\rings\" />
+      <Folder Include="screens\enhancement\" />
+    </ItemGroup>
+
 </Project>

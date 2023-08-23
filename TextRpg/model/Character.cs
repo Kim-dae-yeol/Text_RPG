@@ -1,3 +1,4 @@
+using System.Text;
 using TextRpg.model.items;
 using TextRpg.model.items.armor;
 using TextRpg.model.items.weapon;
@@ -159,7 +160,7 @@ public class Character
                 Equipment.Armor = IItem.Empty;
                 break;
             case IItem.ItemType.Ring:
-                if (Equipment.Ring1.GUID == item.GUID)
+                if (Equipment.Ring1.Guid == item.Guid)
                 {
                     Equipment.Ring1 = IItem.Empty;
                 }
@@ -186,6 +187,74 @@ public class Character
 
     public bool IsEquipped(IItem item)
     {
-        return Equipment.EquipItems().Contains(item);
+        return Equipment.EquipItems().Find(it => it.Guid == item.Guid) != null;
+    }
+
+    public void BuyItem(IItem item)
+    {
+        var emptyIndex = _inventory.FindIndex(item => item.ID == IItem.Empty.ID);
+        if (emptyIndex != -1)
+        {
+            _inventory[emptyIndex] = item;
+        }
+    }
+
+    public static Character FromCsv(string? csvLine)
+    {
+        if (string.IsNullOrEmpty(csvLine))
+        {
+            return new Character();
+        }
+
+        var data = csvLine.Split(",");
+        var c = new Character();
+        c.Name = data[0];
+        c.Job = data[1];
+        c.Level = int.Parse(data[2]);
+        c.Exp = int.Parse(data[3]);
+        c.LevelUpExp = int.Parse(data[4]);
+        c.Hp = int.Parse(data[5]);
+        c.Atk = int.Parse(data[6]);
+        c.Defence = int.Parse(data[7]);
+        c.Critical = int.Parse(data[8]);
+        c.Speed = int.Parse(data[9]);
+        c.Gold = int.Parse(data[10]);
+
+        c.Equipment.Helm = IItem.FromString(data[11]);
+        c.Equipment.Armor = IItem.FromString(data[12]);
+        c.Equipment.Necklace = IItem.FromString(data[13]);
+        c.Equipment.Weapon = IItem.FromString(data[14]);
+        c.Equipment.SubWeapon = IItem.FromString(data[15]);
+        c.Equipment.Ring1 = IItem.FromString(data[16]);
+        c.Equipment.Ring2 = IItem.FromString(data[17]);
+
+        for (var i = 18; i < 18 + 15; i++)
+        {
+            c._inventory[i - 18] = IItem.FromString(data[i]);
+        }
+
+        return c;
+    }
+}
+
+public static class CharacterExt
+{
+    public static string ToCsv(this Character c)
+    {
+        var resultBuilder = new StringBuilder($"{c.Name},{c.Job},{c.Level},{c.Exp}," +
+                                              $"{c.LevelUpExp},{c.Hp},{c.Atk},{c.Defence}," +
+                                              $"{c.Critical},{c.Speed},{c.Gold},");
+        foreach (var equip in c.Equipment.EquipItems())
+        {
+            resultBuilder.Append($"{equip.ID}:{equip.Enhancement}:{equip.Guid},");
+        }
+
+        foreach (var item in c.Inventory)
+        {
+            resultBuilder.Append($"{item.ID}:{item.Enhancement}:{item.Guid},");
+        }
+
+        resultBuilder.Remove(resultBuilder.Length - 1, 1);
+        return resultBuilder.ToString();
     }
 }
